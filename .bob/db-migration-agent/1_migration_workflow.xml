@@ -1,0 +1,521 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<migration_workflow>
+  <overview>
+    <title>Database Migration Workflow</title>
+    <description>
+      Complete 7-phase workflow for migrating databases across platforms.
+      Supports Oracle, PostgreSQL, SQL Server, MySQL, DB2, and Snowflake.
+    </description>
+  </overview>
+
+  <phase id="1" name="Requirements Gathering">
+    <description>Collect all necessary information about source and target databases</description>
+    <automated>true</automated>
+    <steps>
+      <step id="1.1">
+        <action>Identify source database platform and version</action>
+        <questions>
+          <question>What is your source database platform?</question>
+          <options>
+            <option>Oracle (11g, 12c, 19c, 21c)</option>
+            <option>SQL Server (2012-2022)</option>
+            <option>MySQL (5.7, 8.0)</option>
+            <option>DB2 (10.5, 11.1, 11.5)</option>
+            <option>PostgreSQL (9.6+)</option>
+          </options>
+        </questions>
+      </step>
+      
+      <step id="1.2">
+        <action>Collect source database connection details</action>
+        <required_info>
+          <item>Hostname/IP address</item>
+          <item>Port number</item>
+          <item>Database/Schema name</item>
+          <item>Authentication method (username/password, Kerberos, etc.)</item>
+          <item>SSL/TLS requirements</item>
+        </required_info>
+      </step>
+      
+      <step id="1.3">
+        <action>Identify target database platform and version</action>
+        <questions>
+          <question>What is your target database platform?</question>
+          <options>
+            <option>PostgreSQL (12, 13, 14, 15, 16)</option>
+            <option>Snowflake</option>
+            <option>AWS RDS (PostgreSQL, MySQL, SQL Server)</option>
+            <option>Azure SQL Database</option>
+            <option>Google Cloud SQL</option>
+          </options>
+        </questions>
+      </step>
+      
+      <step id="1.4">
+        <action>Collect target database connection details</action>
+        <required_info>
+          <item>Hostname/IP address or cloud endpoint</item>
+          <item>Port number</item>
+          <item>Database/Schema name</item>
+          <item>Authentication credentials</item>
+          <item>Region/availability zone (for cloud)</item>
+        </required_info>
+      </step>
+      
+      <step id="1.5">
+        <action>Define migration scope</action>
+        <questions>
+          <question>Which schemas/databases should be migrated?</question>
+          <question>Should data be migrated? (Yes/No)</question>
+          <question>Should stored procedures be migrated? (Yes/No/Convert)</question>
+          <question>Should views be migrated? (Yes/No/Convert)</question>
+          <question>Should triggers be migrated? (Yes/No/Convert)</question>
+          <question>Are there any tables to exclude?</question>
+        </questions>
+      </step>
+      
+      <step id="1.6">
+        <action>Gather constraints and requirements</action>
+        <questions>
+          <question>What is your acceptable downtime window?</question>
+          <question>What is the estimated data volume?</question>
+          <question>Are there any compliance requirements (GDPR, HIPAA, etc.)?</question>
+          <question>What are the performance requirements?</question>
+          <question>Is this a one-time migration or ongoing replication?</question>
+        </questions>
+      </step>
+    </steps>
+    
+    <outputs>
+      <output>requirements.yaml - Complete requirements specification</output>
+      <output>connection_config.yaml - Database connection configurations</output>
+    </outputs>
+  </phase>
+
+  <phase id="2" name="Discovery & Analysis">
+    <description>Extract and analyze source database metadata</description>
+    <automated>true</automated>
+    <steps>
+      <step id="2.1">
+        <action>Validate database connectivity</action>
+        <validations>
+          <validation>Test source database connection</validation>
+          <validation>Test target database connection</validation>
+          <validation>Verify user permissions</validation>
+          <validation>Check database versions</validation>
+        </validations>
+      </step>
+      
+      <step id="2.2">
+        <action>Extract schema metadata</action>
+        <metadata_to_extract>
+          <item>Tables (columns, data types, constraints)</item>
+          <item>Primary keys and unique constraints</item>
+          <item>Foreign key relationships</item>
+          <item>Indexes (B-tree, bitmap, full-text, etc.)</item>
+          <item>Views and materialized views</item>
+          <item>Stored procedures and functions</item>
+          <item>Triggers</item>
+          <item>Sequences and auto-increment columns</item>
+          <item>Custom types and domains</item>
+          <item>Partitioning schemes</item>
+        </metadata_to_extract>
+      </step>
+      
+      <step id="2.3">
+        <action>Analyze data volumes and statistics</action>
+        <analysis>
+          <item>Row counts per table</item>
+          <item>Table sizes (MB/GB)</item>
+          <item>Index sizes</item>
+          <item>Data growth rates</item>
+          <item>Most frequently accessed tables</item>
+        </analysis>
+      </step>
+      
+      <step id="2.4">
+        <action>Identify dependencies and relationships</action>
+        <dependency_analysis>
+          <item>Foreign key dependency graph</item>
+          <item>View dependencies</item>
+          <item>Stored procedure call chains</item>
+          <item>Trigger execution order</item>
+        </dependency_analysis>
+      </step>
+      
+      <step id="2.5">
+        <action>Assess compatibility and complexity</action>
+        <assessment_criteria>
+          <criterion>Data type compatibility</criterion>
+          <criterion>SQL dialect differences</criterion>
+          <criterion>Feature availability in target</criterion>
+          <criterion>Performance implications</criterion>
+          <criterion>Security model differences</criterion>
+        </assessment_criteria>
+      </step>
+    </steps>
+    
+    <outputs>
+      <output>schema_metadata.json - Complete schema structure</output>
+      <output>dependency_graph.json - Relationship mappings</output>
+      <output>compatibility_report.md - Compatibility assessment</output>
+      <output>data_volume_report.md - Data statistics</output>
+    </outputs>
+  </phase>
+
+  <phase id="3" name="Architecture Design">
+    <description>Design target database architecture and migration strategy</description>
+    <automated>true</automated>
+    <steps>
+      <step id="3.1">
+        <action>Design target schema structure</action>
+        <design_elements>
+          <element>Table definitions with converted data types</element>
+          <element>Constraint definitions</element>
+          <element>Index strategy</element>
+          <element>Partitioning recommendations</element>
+          <element>Naming conventions</element>
+        </design_elements>
+      </step>
+      
+      <step id="3.2">
+        <action>Plan data type conversions</action>
+        <conversion_mapping>
+          <mapping source="Oracle" target="PostgreSQL">
+            <type from="NUMBER" to="NUMERIC/INTEGER/BIGINT"/>
+            <type from="VARCHAR2" to="VARCHAR"/>
+            <type from="DATE" to="TIMESTAMP"/>
+            <type from="CLOB" to="TEXT"/>
+            <type from="BLOB" to="BYTEA"/>
+          </mapping>
+          <mapping source="SQL Server" target="PostgreSQL">
+            <type from="DATETIME" to="TIMESTAMP"/>
+            <type from="BIT" to="BOOLEAN"/>
+            <type from="UNIQUEIDENTIFIER" to="UUID"/>
+            <type from="NVARCHAR" to="VARCHAR"/>
+          </mapping>
+          <mapping source="MySQL" target="PostgreSQL">
+            <type from="TINYINT(1)" to="BOOLEAN"/>
+            <type from="DATETIME" to="TIMESTAMP"/>
+            <type from="TEXT" to="TEXT"/>
+            <type from="ENUM" to="VARCHAR with CHECK constraint"/>
+          </mapping>
+        </conversion_mapping>
+      </step>
+      
+      <step id="3.3">
+        <action>Design migration architecture</action>
+        <architecture_components>
+          <component>ETL pipeline design</component>
+          <component>Staging area requirements</component>
+          <component>Parallel execution strategy</component>
+          <component>Error handling approach</component>
+          <component>Monitoring and logging</component>
+          <component>Rollback procedures</component>
+        </architecture_components>
+      </step>
+      
+      <step id="3.4">
+        <action>Plan performance optimization</action>
+        <optimizations>
+          <optimization>Batch size determination</optimization>
+          <optimization>Parallel thread configuration</optimization>
+          <optimization>Index creation strategy (before/after data load)</optimization>
+          <optimization>Statistics gathering plan</optimization>
+          <optimization>Connection pooling setup</optimization>
+        </optimizations>
+      </step>
+    </steps>
+    
+    <outputs>
+      <output>target_schema_design.md - Target database design</output>
+      <output>data_type_mapping.yaml - Type conversion matrix</output>
+      <output>migration_architecture.md - Architecture diagram and description</output>
+    </outputs>
+  </phase>
+
+  <phase id="4" name="Migration Plan Generation">
+    <description>Create detailed migration execution plan</description>
+    <automated>true</automated>
+    <steps>
+      <step id="4.1">
+        <action>Define migration phases</action>
+        <phases>
+          <phase>Pre-migration preparation</phase>
+          <phase>Schema migration (DDL)</phase>
+          <phase>Data migration (DML)</phase>
+          <phase>Post-migration validation</phase>
+          <phase>Performance tuning</phase>
+          <phase>Cutover execution</phase>
+        </phases>
+      </step>
+      
+      <step id="4.2">
+        <action>Create task breakdown</action>
+        <task_categories>
+          <category>Pre-migration tasks</category>
+          <category>Schema creation tasks</category>
+          <category>Data migration tasks (by table)</category>
+          <category>Validation tasks</category>
+          <category>Post-migration tasks</category>
+        </task_categories>
+      </step>
+      
+      <step id="4.3">
+        <action>Define execution order</action>
+        <ordering_rules>
+          <rule>Create tables without foreign keys first</rule>
+          <rule>Migrate data in dependency order</rule>
+          <rule>Add foreign keys after data migration</rule>
+          <rule>Create indexes after data load</rule>
+          <rule>Gather statistics last</rule>
+        </ordering_rules>
+      </step>
+      
+      <step id="4.4">
+        <action>Establish validation checkpoints</action>
+        <checkpoints>
+          <checkpoint>After schema creation</checkpoint>
+          <checkpoint>After each table migration</checkpoint>
+          <checkpoint>After constraint creation</checkpoint>
+          <checkpoint>After index creation</checkpoint>
+          <checkpoint>Final validation</checkpoint>
+        </checkpoints>
+      </step>
+      
+      <step id="4.5">
+        <action>Document rollback procedures</action>
+        <rollback_steps>
+          <step>Backup verification</step>
+          <step>Rollback script generation</step>
+          <step>Recovery time estimation</step>
+          <step>Rollback testing plan</step>
+        </rollback_steps>
+      </step>
+    </steps>
+    
+    <outputs>
+      <output>MIGRATION_PLAN.md - Detailed migration plan</output>
+      <output>task_timeline.yaml - Task schedule with dependencies</output>
+      <output>rollback_plan.md - Rollback procedures</output>
+    </outputs>
+  </phase>
+
+  <phase id="5" name="Framework Generation">
+    <description>Generate complete migration framework with all scripts and tools</description>
+    <automated>true</automated>
+    <steps>
+      <step id="5.1">
+        <action>Generate project structure</action>
+        <structure>
+          <directory>config/ - Configuration files</directory>
+          <directory>discovery/ - Schema discovery scripts</directory>
+          <directory>conversion/ - DDL conversion tools</directory>
+          <directory>migration/ - Data migration scripts</directory>
+          <directory>validation/ - Validation scripts</directory>
+          <directory>tests/ - Test suite</directory>
+          <directory>scripts/ - Execution scripts</directory>
+          <directory>output/ - Generated files and logs</directory>
+          <directory>docs/ - Documentation</directory>
+        </structure>
+      </step>
+      
+      <step id="5.2">
+        <action>Generate configuration files</action>
+        <configs>
+          <config>.env.template - Environment variables template</config>
+          <config>source_db.yaml - Source database config</config>
+          <config>target_db.yaml - Target database config</config>
+          <config>migration_config.yaml - Migration parameters</config>
+        </configs>
+      </step>
+      
+      <step id="5.3">
+        <action>Generate discovery scripts</action>
+        <scripts>
+          <script>extract_schema.py - Extract schema metadata</script>
+          <script>analyze_dependencies.py - Analyze relationships</script>
+          <script>generate_report.py - Create analysis report</script>
+        </scripts>
+      </step>
+      
+      <step id="5.4">
+        <action>Generate conversion tools</action>
+        <tools>
+          <tool>ddl_converter.py - Convert DDL statements</tool>
+          <tool>data_type_mapper.py - Map data types</tool>
+          <tool>sql_dialect_translator.py - Translate SQL syntax</tool>
+        </tools>
+      </step>
+      
+      <step id="5.5">
+        <action>Generate migration scripts</action>
+        <scripts>
+          <script>schema_migrator.py - Migrate schema</script>
+          <script>data_migrator.py - Migrate data</script>
+          <script>batch_processor.py - Process data in batches</script>
+        </scripts>
+      </step>
+      
+      <step id="5.6">
+        <action>Generate validation scripts</action>
+        <scripts>
+          <script>count_validator.py - Validate row counts</script>
+          <script>data_validator.py - Validate data integrity</script>
+          <script>integrity_checker.py - Check constraints</script>
+        </scripts>
+      </step>
+      
+      <step id="5.7">
+        <action>Generate execution scripts</action>
+        <scripts>
+          <script>run_migration.sh - Main execution script</script>
+          <script>rollback.sh - Rollback script</script>
+          <script>validate.sh - Validation script</script>
+        </scripts>
+      </step>
+      
+      <step id="5.8">
+        <action>Generate requirements.txt</action>
+        <dependencies>
+          <dependency>psycopg2-binary - PostgreSQL driver</dependency>
+          <dependency>cx_Oracle - Oracle driver</dependency>
+          <dependency>pymssql - SQL Server driver</dependency>
+          <dependency>pymysql - MySQL driver</dependency>
+          <dependency>ibm_db - DB2 driver</dependency>
+          <dependency>snowflake-connector-python - Snowflake driver</dependency>
+          <dependency>pyyaml - YAML parsing</dependency>
+          <dependency>python-dotenv - Environment variables</dependency>
+        </dependencies>
+      </step>
+    </steps>
+    
+    <outputs>
+      <output>Complete migration framework with all files</output>
+      <output>requirements.txt - Python dependencies</output>
+      <output>README.md - Setup and usage instructions</output>
+    </outputs>
+  </phase>
+
+  <phase id="6" name="Test Suite Generation">
+    <description>Create comprehensive test suite for validation</description>
+    <automated>true</automated>
+    <steps>
+      <step id="6.1">
+        <action>Generate unit tests</action>
+        <test_types>
+          <test>Data type conversion tests</test>
+          <test>SQL dialect translation tests</test>
+          <test>DDL conversion tests</test>
+        </test_types>
+      </step>
+      
+      <step id="6.2">
+        <action>Generate integration tests</action>
+        <test_types>
+          <test>End-to-end migration tests</test>
+          <test>Schema migration tests</test>
+          <test>Data migration tests</test>
+        </test_types>
+      </step>
+      
+      <step id="6.3">
+        <action>Generate validation tests</action>
+        <test_types>
+          <test>Row count validation</test>
+          <test>Data integrity validation</test>
+          <test>Constraint validation</test>
+          <test>Foreign key validation</test>
+        </test_types>
+      </step>
+      
+      <step id="6.4">
+        <action>Generate performance tests</action>
+        <test_types>
+          <test>Query performance benchmarks</test>
+          <test>Index effectiveness tests</test>
+          <test>Load testing</test>
+        </test_types>
+      </step>
+    </steps>
+    
+    <outputs>
+      <output>tests/ directory with complete test suite</output>
+      <output>pytest.ini - Test configuration</output>
+      <output>test_report_template.md - Test report template</output>
+    </outputs>
+  </phase>
+
+  <phase id="7" name="Execution & Documentation">
+    <description>Execute migration and generate comprehensive documentation</description>
+    <automated>false</automated>
+    <steps>
+      <step id="7.1">
+        <action>Prepare execution environment</action>
+        <preparations>
+          <item>Install Python dependencies</item>
+          <item>Configure environment variables</item>
+          <item>Validate database connections</item>
+          <item>Create backup of source database</item>
+        </preparations>
+      </step>
+      
+      <step id="7.2">
+        <action>Execute migration (user-initiated)</action>
+        <execution_steps>
+          <step>Run discovery phase</step>
+          <step>Review generated DDL</step>
+          <step>Execute schema migration</step>
+          <step>Execute data migration</step>
+          <step>Run validation suite</step>
+          <step>Generate final report</step>
+        </execution_steps>
+      </step>
+      
+      <step id="7.3">
+        <action>Generate documentation</action>
+        <documents>
+          <document>MIGRATION_PLAN.md - Complete migration plan</document>
+          <document>SCHEMA_MAPPING.md - Schema conversion details</document>
+          <document>RUNBOOK.md - Execution runbook</document>
+          <document>VALIDATION_REPORT.md - Validation results</document>
+          <document>KNOWN_ISSUES.md - Known issues and workarounds</document>
+        </documents>
+      </step>
+      
+      <step id="7.4">
+        <action>Provide handoff package</action>
+        <handoff_contents>
+          <item>Complete migration framework</item>
+          <item>All documentation</item>
+          <item>Test results</item>
+          <item>Performance benchmarks</item>
+          <item>Rollback procedures</item>
+          <item>Post-migration tasks checklist</item>
+        </handoff_contents>
+      </step>
+    </steps>
+    
+    <outputs>
+      <output>Complete documentation package</output>
+      <output>Migration execution logs</output>
+      <output>Validation reports</output>
+      <output>Handoff summary</output>
+    </outputs>
+  </phase>
+
+  <best_practices>
+    <practice>Always backup source database before migration</practice>
+    <practice>Test migration on a subset of data first</practice>
+    <practice>Validate after each major step</practice>
+    <practice>Monitor performance during migration</practice>
+    <practice>Keep detailed logs of all operations</practice>
+    <practice>Have rollback plan ready</practice>
+    <practice>Test rollback procedures before production migration</practice>
+    <practice>Schedule migration during low-traffic periods</practice>
+    <practice>Communicate with stakeholders throughout process</practice>
+    <practice>Document all decisions and changes</practice>
+  </best_practices>
+</migration_workflow>
+
+<!-- Made with Bob -->

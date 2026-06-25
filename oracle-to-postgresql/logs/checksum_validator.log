@@ -1,0 +1,17 @@
+2026-06-25 23:36:39,140 [INFO] ============================================================
+2026-06-25 23:36:39,140 [INFO] Checksum Validator  (sample size: 1000 rows per table)
+2026-06-25 23:36:39,141 [INFO] Oracle: HR  |  PostgreSQL: hr_schema
+2026-06-25 23:36:39,141 [INFO] Started: 2026-06-25T23:36:39.141132
+2026-06-25 23:36:39,141 [INFO] ============================================================
+2026-06-25 23:36:39,250 [INFO]   OK       JOBS                            19 rows  match=100.0%
+2026-06-25 23:36:39,257 [INFO]   OK       REGIONS                         4 rows  match=100.0%
+2026-06-25 23:36:39,265 [INFO]   OK       COUNTRIES                       25 rows  match=100.0%
+2026-06-25 23:36:39,274 [INFO]   OK       LOCATIONS                       23 rows  match=100.0%
+2026-06-25 23:36:39,291 [INFO]   OK       DEPARTMENTS                     27 rows  match=100.0%
+2026-06-25 23:36:39,303 [INFO]   OK       EMPLOYEES                       23 rows  match=100.0%
+2026-06-25 23:36:39,328 [INFO]   OK       JOB_HISTORY                     10 rows  match=100.0%
+2026-06-25 23:36:39,330 [INFO] ------------------------------------------------------------
+2026-06-25 23:36:39,330 [INFO] Tables checked : 7
+2026-06-25 23:36:39,331 [INFO] Mismatches     : 0
+2026-06-25 23:36:39,331 [INFO] Report         : /Users/surendrajena/Desktop/2026/BoB-All/Latest-test1/dbm-agent-builder/oracle-to-postgresql/output/reports/checksum_validation.json
+2026-06-25 23:36:39,331 [INFO] Checksum validation PASSED ✓

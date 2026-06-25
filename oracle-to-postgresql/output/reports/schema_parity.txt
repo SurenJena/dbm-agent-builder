@@ -1,0 +1,12 @@
+Schema Parity Report
+Generated: 2026-06-25T18:06:39Z
+Oracle schema  : HR
+PostgreSQL schema: hr_schema
+==========================================
+Tables  — Oracle: 7  PostgreSQL: 7
+Views   — Oracle: 0  PostgreSQL: 0
+Sequences — Oracle: 3  PostgreSQL: 3
+Indexes   — Oracle: 11  PostgreSQL: 11
+Constraints — Oracle: 32  PostgreSQL: 19
+
+Parity errors: 1

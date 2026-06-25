@@ -1,0 +1,17 @@
+2026-06-25 23:36:38,577 [INFO] ============================================================
+2026-06-25 23:36:38,578 [INFO] Row Count Validator
+2026-06-25 23:36:38,578 [INFO] Oracle: HR  |  PostgreSQL: hr_schema
+2026-06-25 23:36:38,578 [INFO] Started: 2026-06-25T23:36:38.578231
+2026-06-25 23:36:38,578 [INFO] ============================================================
+2026-06-25 23:36:38,675 [INFO]   OK       JOBS                            19 rows
+2026-06-25 23:36:38,677 [INFO]   OK       REGIONS                         4 rows
+2026-06-25 23:36:38,680 [INFO]   OK       COUNTRIES                       25 rows
+2026-06-25 23:36:38,682 [INFO]   OK       LOCATIONS                       23 rows
+2026-06-25 23:36:38,685 [INFO]   OK       DEPARTMENTS                     27 rows
+2026-06-25 23:36:38,688 [INFO]   OK       EMPLOYEES                       23 rows
+2026-06-25 23:36:38,691 [INFO]   OK       JOB_HISTORY                     10 rows
+2026-06-25 23:36:38,694 [INFO] ------------------------------------------------------------
+2026-06-25 23:36:38,695 [INFO] Tables checked : 7
+2026-06-25 23:36:38,695 [INFO] Mismatches     : 0
+2026-06-25 23:36:38,695 [INFO] Report         : /Users/surendrajena/Desktop/2026/BoB-All/Latest-test1/dbm-agent-builder/oracle-to-postgresql/output/reports/count_validation.json
+2026-06-25 23:36:38,695 [INFO] Count validation PASSED ✓

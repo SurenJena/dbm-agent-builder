@@ -1,0 +1,20 @@
+# =============================================================================
+# PostgreSQL Target Database Configuration
+# =============================================================================
+# Values are overridden by environment variables (see .env.template)
+# =============================================================================
+
+postgresql:
+  host: "${PG_HOST}"
+  port: ${PG_PORT}
+  database: "${PG_DATABASE}"
+  schema: "${PG_SCHEMA}"
+  username: "${PG_USER}"
+  password: "${PG_PASSWORD}"
+  # Connection pool settings
+  pool_min: 1
+  pool_max: 4
+  # Performance settings
+  work_mem: "256MB"
+  maintenance_work_mem: "512MB"
+  max_parallel_workers: 4

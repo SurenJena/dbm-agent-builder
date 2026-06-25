@@ -1,0 +1,16 @@
+2026-06-25 23:36:36,272 [INFO] ============================================================
+2026-06-25 23:36:36,272 [INFO] Dependency Analyzer
+2026-06-25 23:36:36,273 [INFO] Started: 2026-06-25T23:36:36.273082
+2026-06-25 23:36:36,273 [INFO] ============================================================
+2026-06-25 23:36:36,274 [WARNING] Circular FK dependencies detected: ['DEPARTMENTS', 'EMPLOYEES', 'JOB_HISTORY']
+2026-06-25 23:36:36,274 [WARNING] These tables will be appended at the end; FKs applied post-load.
+2026-06-25 23:36:36,274 [INFO] Migration order (7 tables):
+2026-06-25 23:36:36,275 [INFO]     1. JOBS
+2026-06-25 23:36:36,275 [INFO]     2. REGIONS
+2026-06-25 23:36:36,275 [INFO]     3. COUNTRIES  ← depends on: ['REGIONS']
+2026-06-25 23:36:36,275 [INFO]     4. LOCATIONS  ← depends on: ['COUNTRIES']
+2026-06-25 23:36:36,275 [INFO]     5. DEPARTMENTS  ← depends on: ['EMPLOYEES', 'LOCATIONS']
+2026-06-25 23:36:36,275 [INFO]     6. EMPLOYEES  ← depends on: ['JOBS', 'DEPARTMENTS']
+2026-06-25 23:36:36,275 [INFO]     7. JOB_HISTORY  ← depends on: ['JOBS', 'EMPLOYEES', 'DEPARTMENTS']
+2026-06-25 23:36:36,275 [WARNING] Tables with circular FKs (3): ['DEPARTMENTS', 'EMPLOYEES', 'JOB_HISTORY']
+2026-06-25 23:36:36,275 [INFO] Output: /Users/surendrajena/Desktop/2026/BoB-All/Latest-test1/dbm-agent-builder/oracle-to-postgresql/output/ddl/dependency_order.json

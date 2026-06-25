@@ -1,0 +1,41 @@
+{
+  "summary": [
+    {
+      "table": "JOBS",
+      "rows": 19,
+      "status": "OK"
+    },
+    {
+      "table": "REGIONS",
+      "rows": 4,
+      "status": "OK"
+    },
+    {
+      "table": "COUNTRIES",
+      "rows": 25,
+      "status": "OK"
+    },
+    {
+      "table": "LOCATIONS",
+      "rows": 23,
+      "status": "OK"
+    },
+    {
+      "table": "DEPARTMENTS",
+      "rows": 27,
+      "status": "OK"
+    },
+    {
+      "table": "EMPLOYEES",
+      "rows": 23,
+      "status": "OK"
+    },
+    {
+      "table": "JOB_HISTORY",
+      "rows": 10,
+      "status": "OK"
+    }
+  ],
+  "total_rows": 131,
+  "errors": []
+}

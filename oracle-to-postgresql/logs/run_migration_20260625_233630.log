@@ -1,0 +1,98 @@
+  [INFO]  Migration log: /Users/surendrajena/Desktop/2026/BoB-All/Latest-test1/dbm-agent-builder/oracle-to-postgresql/logs/run_migration_20260625_233630.log
+  [INFO]  BASE_DIR     : /Users/surendrajena/Desktop/2026/BoB-All/Latest-test1/dbm-agent-builder/oracle-to-postgresql
+  [INFO]  Flags        : schema-only=false  skip-validation=false  data-only=false
+
+══════════════════════════════════════════════════════════
+  ▶ Phase 0 — Prerequisites check + __pycache__ purge
+══════════════════════════════════════════════════════════
+  [OK]    __pycache__ purged
+  [OK]    python3: Python 3.9.6
+  [OK]    psql: psql (PostgreSQL) 18.4
+  [OK]    Python packages verified
+  [OK]    Output directories ready
+
+══════════════════════════════════════════════════════════
+  ▶ Phase 1 — Connection tests
+══════════════════════════════════════════════════════════
+  [OK]    Connections verified
+
+══════════════════════════════════════════════════════════
+  ▶ Phase 2 — Schema discovery
+══════════════════════════════════════════════════════════
+  [OK]    Schema discovery complete
+
+══════════════════════════════════════════════════════════
+  ▶ Phase 3 — DDL conversion
+══════════════════════════════════════════════════════════
+  [OK]    DDL conversion complete — files in /Users/surendrajena/Desktop/2026/BoB-All/Latest-test1/dbm-agent-builder/oracle-to-postgresql/output/ddl/
+
+══════════════════════════════════════════════════════════
+  ▶ Phase 4 — Apply schema to PostgreSQL (tables → sequences → PK/UK)
+══════════════════════════════════════════════════════════
+  [INFO]  Applying 01_tables.sql …
+  [OK]    01_tables.sql applied
+  [INFO]  Applying 02_sequences.sql …
+  [OK]    02_sequences.sql applied
+  [INFO]  Applying 03_pk_uk.sql …
+  [OK]    03_pk_uk.sql applied
+
+══════════════════════════════════════════════════════════
+  ▶ Phase 5 — Data migration
+══════════════════════════════════════════════════════════
+  [INFO]  Dropping existing FK constraints before data load …
+  [OK]    Existing FK constraints dropped
+  [OK]    Data migration complete
+
+══════════════════════════════════════════════════════════
+  ▶ Phase 6 — Post-data DDL (FK constraints → CHECK constraints → indexes)
+══════════════════════════════════════════════════════════
+  [INFO]  Applying 04_fk.sql …
+  [OK]    04_fk.sql applied
+  [INFO]  Applying 05_check.sql …
+  [OK]    05_check.sql applied
+  [INFO]  Applying 06_indexes.sql …
+  [OK]    06_indexes.sql applied
+
+══════════════════════════════════════════════════════════
+  ▶ Phase 7 — View creation
+══════════════════════════════════════════════════════════
+  [OK]    Views applied
+
+══════════════════════════════════════════════════════════
+  ▶ Phase 8 — Row-count validation
+══════════════════════════════════════════════════════════
+  [OK]    Row-count validation PASSED
+
+══════════════════════════════════════════════════════════
+  ▶ Phase 9 — Checksum validation
+══════════════════════════════════════════════════════════
+  [OK]    Checksum validation PASSED
+
+══════════════════════════════════════════════════════════
+  ▶ Phase 10 — Schema parity validation
+══════════════════════════════════════════════════════════
+  [INFO]  Tables — Oracle: 7  PostgreSQL: 7
+  [INFO]  Views  — Oracle: 0  PostgreSQL: 0
+  [INFO]  Sequences — Oracle: 3  PostgreSQL: 3
+  [INFO]  Indexes   — Oracle: 11  PostgreSQL: 11
+  [INFO]  Constraints — Oracle: 32  PostgreSQL: 19
+  [WARN]  Constraint count MISMATCH: Oracle=32  PG=19
+  [INFO]  Parity report saved: /Users/surendrajena/Desktop/2026/BoB-All/Latest-test1/dbm-agent-builder/oracle-to-postgresql/output/reports/schema_parity.txt
+  [WARN]  Schema parity: 1 discrepancies found — review /Users/surendrajena/Desktop/2026/BoB-All/Latest-test1/dbm-agent-builder/oracle-to-postgresql/output/reports/schema_parity.txt
+
+══════════════════════════════════════════════════════════
+  ▶ Phase 11 — ANALYZE (gather PostgreSQL statistics)
+══════════════════════════════════════════════════════════
+  [OK]    ANALYZE complete
+
+
+══════════════════════════════════════════════════════════
+  ▶ Migration Complete
+══════════════════════════════════════════════════════════
+  [INFO]  Flags used      : schema-only=false  skip-validation=false  data-only=false
+  [INFO]  Parity errors   : 1
+  [INFO]  Log file        : /Users/surendrajena/Desktop/2026/BoB-All/Latest-test1/dbm-agent-builder/oracle-to-postgresql/logs/run_migration_20260625_233630.log
+  [INFO]  Parity report   : /Users/surendrajena/Desktop/2026/BoB-All/Latest-test1/dbm-agent-builder/oracle-to-postgresql/output/reports/schema_parity.txt
+  [INFO]  Count report    : /Users/surendrajena/Desktop/2026/BoB-All/Latest-test1/dbm-agent-builder/oracle-to-postgresql/output/reports/count_validation.json
+  [INFO]  Checksum report : /Users/surendrajena/Desktop/2026/BoB-All/Latest-test1/dbm-agent-builder/oracle-to-postgresql/output/reports/checksum_validation.json
+  [OK]    All phases completed successfully ✓

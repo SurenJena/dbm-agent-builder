@@ -1,0 +1,536 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<database_platforms>
+  <overview>
+    <title>Supported Database Platforms</title>
+    <description>
+      Comprehensive specifications for all supported source and target database platforms,
+      including connection details, data types, SQL dialects, and migration considerations.
+    </description>
+  </overview>
+
+  <source_platforms>
+    <platform id="oracle">
+      <name>Oracle Database</name>
+      <versions>
+        <version>11g (11.2.0.4)</version>
+        <version>12c (12.1, 12.2)</version>
+        <version>18c</version>
+        <version>19c</version>
+        <version>21c</version>
+      </versions>
+      
+      <connection>
+        <driver>cx_Oracle</driver>
+        <connection_string>oracle+cx_oracle://user:password@host:port/service_name</connection_string>
+        <default_port>1521</default_port>
+        <authentication>
+          <method>Username/Password</method>
+          <method>Kerberos</method>
+          <method>Oracle Wallet</method>
+        </authentication>
+      </connection>
+      
+      <data_types>
+        <type name="NUMBER" category="numeric">
+          <description>Variable-precision numeric</description>
+          <target_mapping platform="postgresql">NUMERIC, INTEGER, BIGINT</target_mapping>
+          <conversion_rule>NUMBER(p,0) where p <= 9 → INTEGER</conversion_rule>
+          <conversion_rule>NUMBER(p,0) where p > 9 → BIGINT</conversion_rule>
+          <conversion_rule>NUMBER(p,s) where s > 0 → NUMERIC(p,s)</conversion_rule>
+        </type>
+        
+        <type name="VARCHAR2" category="string">
+          <description>Variable-length character string</description>
+          <target_mapping platform="postgresql">VARCHAR</target_mapping>
+          <max_length>4000 bytes (32767 in 12c+)</max_length>
+        </type>
+        
+        <type name="CHAR" category="string">
+          <description>Fixed-length character string</description>
+          <target_mapping platform="postgresql">CHAR</target_mapping>
+          <max_length>2000 bytes</max_length>
+        </type>
+        
+        <type name="DATE" category="datetime">
+          <description>Date and time (no timezone)</description>
+          <target_mapping platform="postgresql">TIMESTAMP</target_mapping>
+          <note>Oracle DATE includes time component</note>
+        </type>
+        
+        <type name="TIMESTAMP" category="datetime">
+          <description>Date and time with fractional seconds</description>
+          <target_mapping platform="postgresql">TIMESTAMP</target_mapping>
+        </type>
+        
+        <type name="CLOB" category="lob">
+          <description>Character large object</description>
+          <target_mapping platform="postgresql">TEXT</target_mapping>
+        </type>
+        
+        <type name="BLOB" category="lob">
+          <description>Binary large object</description>
+          <target_mapping platform="postgresql">BYTEA</target_mapping>
+        </type>
+        
+        <type name="RAW" category="binary">
+          <description>Variable-length binary data</description>
+          <target_mapping platform="postgresql">BYTEA</target_mapping>
+        </type>
+      </data_types>
+      
+      <sql_dialect>
+        <feature name="DUAL table">
+          <description>Dummy table for SELECT without FROM</description>
+          <conversion>Remove DUAL references in PostgreSQL</conversion>
+          <example from="SELECT SYSDATE FROM DUAL" to="SELECT CURRENT_TIMESTAMP"/>
+        </feature>
+        
+        <feature name="NVL function">
+          <description>Null value substitution</description>
+          <conversion>Use COALESCE</conversion>
+          <example from="NVL(column, 0)" to="COALESCE(column, 0)"/>
+        </feature>
+        
+        <feature name="DECODE function">
+          <description>Inline if-then-else logic</description>
+          <conversion>Use CASE expression</conversion>
+          <example from="DECODE(status, 'A', 'Active', 'Inactive')" 
+                   to="CASE WHEN status = 'A' THEN 'Active' ELSE 'Inactive' END"/>
+        </feature>
+        
+        <feature name="Sequences">
+          <description>Auto-incrementing values</description>
+          <conversion>Create PostgreSQL sequences or use SERIAL/IDENTITY</conversion>
+          <example from="CREATE SEQUENCE seq_name" to="CREATE SEQUENCE seq_name"/>
+        </feature>
+        
+        <feature name="Outer join syntax">
+          <description>Oracle (+) syntax</description>
+          <conversion>Use ANSI LEFT/RIGHT JOIN</conversion>
+          <example from="WHERE a.id = b.id(+)" to="LEFT JOIN b ON a.id = b.id"/>
+        </feature>
+      </sql_dialect>
+      
+      <migration_considerations>
+        <consideration>PL/SQL procedures need manual conversion to PL/pgSQL</consideration>
+        <consideration>Packages must be restructured as schemas or separate functions</consideration>
+        <consideration>Triggers syntax differs significantly</consideration>
+        <consideration>Bitmap indexes not supported in PostgreSQL</consideration>
+        <consideration>Function-based indexes require different syntax</consideration>
+      </migration_considerations>
+    </platform>
+
+    <platform id="sqlserver">
+      <name>Microsoft SQL Server</name>
+      <versions>
+        <version>2012</version>
+        <version>2014</version>
+        <version>2016</version>
+        <version>2017</version>
+        <version>2019</version>
+        <version>2022</version>
+      </versions>
+      
+      <connection>
+        <driver>pymssql</driver>
+        <connection_string>mssql+pymssql://user:password@host:port/database</connection_string>
+        <default_port>1433</default_port>
+        <authentication>
+          <method>SQL Server Authentication</method>
+          <method>Windows Authentication</method>
+          <method>Azure Active Directory</method>
+        </authentication>
+      </connection>
+      
+      <data_types>
+        <type name="INT" category="numeric">
+          <description>32-bit integer</description>
+          <target_mapping platform="postgresql">INTEGER</target_mapping>
+        </type>
+        
+        <type name="BIGINT" category="numeric">
+          <description>64-bit integer</description>
+          <target_mapping platform="postgresql">BIGINT</target_mapping>
+        </type>
+        
+        <type name="DECIMAL" category="numeric">
+          <description>Fixed-precision numeric</description>
+          <target_mapping platform="postgresql">NUMERIC</target_mapping>
+        </type>
+        
+        <type name="VARCHAR" category="string">
+          <description>Variable-length string</description>
+          <target_mapping platform="postgresql">VARCHAR</target_mapping>
+        </type>
+        
+        <type name="NVARCHAR" category="string">
+          <description>Unicode variable-length string</description>
+          <target_mapping platform="postgresql">VARCHAR</target_mapping>
+          <note>PostgreSQL VARCHAR is already Unicode</note>
+        </type>
+        
+        <type name="DATETIME" category="datetime">
+          <description>Date and time</description>
+          <target_mapping platform="postgresql">TIMESTAMP</target_mapping>
+        </type>
+        
+        <type name="DATETIME2" category="datetime">
+          <description>Date and time with higher precision</description>
+          <target_mapping platform="postgresql">TIMESTAMP</target_mapping>
+        </type>
+        
+        <type name="BIT" category="boolean">
+          <description>Boolean value (0 or 1)</description>
+          <target_mapping platform="postgresql">BOOLEAN</target_mapping>
+        </type>
+        
+        <type name="UNIQUEIDENTIFIER" category="uuid">
+          <description>Globally unique identifier</description>
+          <target_mapping platform="postgresql">UUID</target_mapping>
+        </type>
+        
+        <type name="TEXT" category="lob">
+          <description>Variable-length text</description>
+          <target_mapping platform="postgresql">TEXT</target_mapping>
+        </type>
+        
+        <type name="IMAGE" category="lob">
+          <description>Variable-length binary data</description>
+          <target_mapping platform="postgresql">BYTEA</target_mapping>
+        </type>
+      </data_types>
+      
+      <sql_dialect>
+        <feature name="Square brackets">
+          <description>Object name delimiters</description>
+          <conversion>Use double quotes</conversion>
+          <example from="[table_name]" to='"table_name"'/>
+        </feature>
+        
+        <feature name="TOP clause">
+          <description>Limit result set</description>
+          <conversion>Use LIMIT</conversion>
+          <example from="SELECT TOP 10 * FROM table" to="SELECT * FROM table LIMIT 10"/>
+        </feature>
+        
+        <feature name="GETDATE()">
+          <description>Current date and time</description>
+          <conversion>Use CURRENT_TIMESTAMP</conversion>
+          <example from="GETDATE()" to="CURRENT_TIMESTAMP"/>
+        </feature>
+        
+        <feature name="ISNULL function">
+          <description>Null value substitution</description>
+          <conversion>Use COALESCE</conversion>
+          <example from="ISNULL(column, 0)" to="COALESCE(column, 0)"/>
+        </feature>
+        
+        <feature name="IDENTITY columns">
+          <description>Auto-incrementing columns</description>
+          <conversion>Use SERIAL or IDENTITY</conversion>
+          <example from="id INT IDENTITY(1,1)" to="id SERIAL"/>
+        </feature>
+      </sql_dialect>
+      
+      <migration_considerations>
+        <consideration>T-SQL procedures need conversion to PL/pgSQL</consideration>
+        <consideration>Computed columns require triggers or generated columns</consideration>
+        <consideration>Clustered indexes map to primary keys</consideration>
+        <consideration>Non-clustered indexes map to regular indexes</consideration>
+        <consideration>Schema ownership model differs</consideration>
+      </migration_considerations>
+    </platform>
+
+    <platform id="mysql">
+      <name>MySQL</name>
+      <versions>
+        <version>5.7</version>
+        <version>8.0</version>
+      </versions>
+      
+      <connection>
+        <driver>pymysql</driver>
+        <connection_string>mysql+pymysql://user:password@host:port/database</connection_string>
+        <default_port>3306</default_port>
+        <authentication>
+          <method>Native Password</method>
+          <method>Caching SHA-2</method>
+        </authentication>
+      </connection>
+      
+      <data_types>
+        <type name="INT" category="numeric">
+          <description>32-bit integer</description>
+          <target_mapping platform="postgresql">INTEGER</target_mapping>
+        </type>
+        
+        <type name="BIGINT" category="numeric">
+          <description>64-bit integer</description>
+          <target_mapping platform="postgresql">BIGINT</target_mapping>
+        </type>
+        
+        <type name="TINYINT(1)" category="boolean">
+          <description>Boolean value</description>
+          <target_mapping platform="postgresql">BOOLEAN</target_mapping>
+        </type>
+        
+        <type name="VARCHAR" category="string">
+          <description>Variable-length string</description>
+          <target_mapping platform="postgresql">VARCHAR</target_mapping>
+        </type>
+        
+        <type name="TEXT" category="lob">
+          <description>Variable-length text</description>
+          <target_mapping platform="postgresql">TEXT</target_mapping>
+        </type>
+        
+        <type name="DATETIME" category="datetime">
+          <description>Date and time</description>
+          <target_mapping platform="postgresql">TIMESTAMP</target_mapping>
+        </type>
+        
+        <type name="ENUM" category="enum">
+          <description>Enumerated type</description>
+          <target_mapping platform="postgresql">VARCHAR with CHECK constraint or ENUM type</target_mapping>
+        </type>
+        
+        <type name="AUTO_INCREMENT" category="sequence">
+          <description>Auto-incrementing column</description>
+          <target_mapping platform="postgresql">SERIAL or IDENTITY</target_mapping>
+        </type>
+      </data_types>
+      
+      <sql_dialect>
+        <feature name="Backticks">
+          <description>Object name delimiters</description>
+          <conversion>Use double quotes</conversion>
+          <example from="`table_name`" to='"table_name"'/>
+        </feature>
+        
+        <feature name="LIMIT with offset">
+          <description>Limit result set with offset</description>
+          <conversion>Use LIMIT OFFSET</conversion>
+          <example from="LIMIT 10, 20" to="LIMIT 20 OFFSET 10"/>
+        </feature>
+        
+        <feature name="AUTO_INCREMENT">
+          <description>Auto-incrementing columns</description>
+          <conversion>Use SERIAL or IDENTITY</conversion>
+          <example from="id INT AUTO_INCREMENT" to="id SERIAL"/>
+        </feature>
+      </sql_dialect>
+      
+      <migration_considerations>
+        <consideration>MySQL stored procedures need conversion</consideration>
+        <consideration>ENUM types should be converted to CHECK constraints or PostgreSQL ENUMs</consideration>
+        <consideration>MyISAM tables don't support transactions</consideration>
+        <consideration>Full-text indexes have different syntax</consideration>
+      </migration_considerations>
+    </platform>
+
+    <platform id="db2">
+      <name>IBM DB2</name>
+      <versions>
+        <version>10.5</version>
+        <version>11.1</version>
+        <version>11.5</version>
+      </versions>
+      
+      <connection>
+        <driver>ibm_db</driver>
+        <connection_string>ibm_db_sa://user:password@host:port/database</connection_string>
+        <default_port>50000</default_port>
+        <authentication>
+          <method>Username/Password</method>
+          <method>Kerberos</method>
+        </authentication>
+      </connection>
+      
+      <data_types>
+        <type name="INTEGER" category="numeric">
+          <description>32-bit integer</description>
+          <target_mapping platform="postgresql">INTEGER</target_mapping>
+        </type>
+        
+        <type name="BIGINT" category="numeric">
+          <description>64-bit integer</description>
+          <target_mapping platform="postgresql">BIGINT</target_mapping>
+        </type>
+        
+        <type name="DECIMAL" category="numeric">
+          <description>Fixed-precision numeric</description>
+          <target_mapping platform="postgresql">NUMERIC</target_mapping>
+        </type>
+        
+        <type name="VARCHAR" category="string">
+          <description>Variable-length string</description>
+          <target_mapping platform="postgresql">VARCHAR</target_mapping>
+        </type>
+        
+        <type name="CLOB" category="lob">
+          <description>Character large object</description>
+          <target_mapping platform="postgresql">TEXT</target_mapping>
+        </type>
+        
+        <type name="BLOB" category="lob">
+          <description>Binary large object</description>
+          <target_mapping platform="postgresql">BYTEA</target_mapping>
+        </type>
+        
+        <type name="TIMESTAMP" category="datetime">
+          <description>Date and time</description>
+          <target_mapping platform="postgresql">TIMESTAMP</target_mapping>
+        </type>
+        
+        <type name="GENERATED ALWAYS" category="sequence">
+          <description>Auto-generated identity column</description>
+          <target_mapping platform="postgresql">IDENTITY or SERIAL</target_mapping>
+        </type>
+      </data_types>
+      
+      <sql_dialect>
+        <feature name="FETCH FIRST">
+          <description>Limit result set</description>
+          <conversion>Use LIMIT</conversion>
+          <example from="FETCH FIRST 10 ROWS ONLY" to="LIMIT 10"/>
+        </feature>
+        
+        <feature name="GENERATED ALWAYS">
+          <description>Identity columns</description>
+          <conversion>Use IDENTITY or SERIAL</conversion>
+          <example from="id INT GENERATED ALWAYS AS IDENTITY" to="id SERIAL"/>
+        </feature>
+      </sql_dialect>
+      
+      <migration_considerations>
+        <consideration>DB2 SQL PL procedures need conversion to PL/pgSQL</consideration>
+        <consideration>Tablespaces have different management</consideration>
+        <consideration>Bufferpools map to shared_buffers configuration</consideration>
+      </migration_considerations>
+    </platform>
+  </source_platforms>
+
+  <target_platforms>
+    <platform id="postgresql">
+      <name>PostgreSQL</name>
+      <versions>
+        <version>12</version>
+        <version>13</version>
+        <version>14</version>
+        <version>15</version>
+        <version>16</version>
+      </versions>
+      
+      <connection>
+        <driver>psycopg2</driver>
+        <connection_string>postgresql://user:password@host:port/database</connection_string>
+        <default_port>5432</default_port>
+      </connection>
+      
+      <features>
+        <feature>ACID compliance</feature>
+        <feature>MVCC (Multi-Version Concurrency Control)</feature>
+        <feature>Advanced indexing (B-tree, Hash, GiST, GIN, BRIN)</feature>
+        <feature>Full-text search</feature>
+        <feature>JSON/JSONB support</feature>
+        <feature>Foreign data wrappers</feature>
+        <feature>Table partitioning</feature>
+        <feature>Parallel query execution</feature>
+      </features>
+      
+      <best_practices>
+        <practice>Use SERIAL or IDENTITY for auto-increment columns</practice>
+        <practice>Create indexes after data load for better performance</practice>
+        <practice>Use ANALYZE after data migration to update statistics</practice>
+        <practice>Consider table partitioning for large tables</practice>
+        <practice>Use connection pooling (pgBouncer) for high concurrency</practice>
+        <practice>Configure shared_buffers to 25% of RAM</practice>
+        <practice>Set work_mem appropriately for complex queries</practice>
+      </best_practices>
+    </platform>
+
+    <platform id="snowflake">
+      <name>Snowflake</name>
+      <connection>
+        <driver>snowflake-connector-python</driver>
+        <connection_string>snowflake://user:password@account.region.snowflakecomputing.com/database</connection_string>
+      </connection>
+      
+      <features>
+        <feature>Cloud-native data warehouse</feature>
+        <feature>Automatic scaling</feature>
+        <feature>Zero-copy cloning</feature>
+        <feature>Time travel</feature>
+        <feature>Semi-structured data support (JSON, Avro, Parquet)</feature>
+        <feature>Secure data sharing</feature>
+      </features>
+      
+      <migration_considerations>
+        <consideration>No indexes - query optimization through clustering</consideration>
+        <consideration>Different cost model (compute + storage)</consideration>
+        <consideration>Warehouse sizing affects performance</consideration>
+        <consideration>Data loading via COPY INTO or Snowpipe</consideration>
+      </migration_considerations>
+    </platform>
+  </target_platforms>
+
+  <conversion_matrix>
+    <title>Cross-Platform Data Type Conversion Matrix</title>
+    
+    <conversion source="Oracle" target="PostgreSQL">
+      <mapping from="NUMBER(p,0)" to="INTEGER" condition="p <= 9"/>
+      <mapping from="NUMBER(p,0)" to="BIGINT" condition="p > 9"/>
+      <mapping from="NUMBER(p,s)" to="NUMERIC(p,s)" condition="s > 0"/>
+      <mapping from="VARCHAR2(n)" to="VARCHAR(n)"/>
+      <mapping from="CHAR(n)" to="CHAR(n)"/>
+      <mapping from="DATE" to="TIMESTAMP"/>
+      <mapping from="TIMESTAMP" to="TIMESTAMP"/>
+      <mapping from="CLOB" to="TEXT"/>
+      <mapping from="BLOB" to="BYTEA"/>
+      <mapping from="RAW" to="BYTEA"/>
+    </conversion>
+    
+    <conversion source="SQL Server" target="PostgreSQL">
+      <mapping from="INT" to="INTEGER"/>
+      <mapping from="BIGINT" to="BIGINT"/>
+      <mapping from="SMALLINT" to="SMALLINT"/>
+      <mapping from="TINYINT" to="SMALLINT"/>
+      <mapping from="DECIMAL(p,s)" to="NUMERIC(p,s)"/>
+      <mapping from="VARCHAR(n)" to="VARCHAR(n)"/>
+      <mapping from="NVARCHAR(n)" to="VARCHAR(n)"/>
+      <mapping from="CHAR(n)" to="CHAR(n)"/>
+      <mapping from="DATETIME" to="TIMESTAMP"/>
+      <mapping from="DATETIME2" to="TIMESTAMP"/>
+      <mapping from="BIT" to="BOOLEAN"/>
+      <mapping from="UNIQUEIDENTIFIER" to="UUID"/>
+      <mapping from="TEXT" to="TEXT"/>
+      <mapping from="IMAGE" to="BYTEA"/>
+    </conversion>
+    
+    <conversion source="MySQL" target="PostgreSQL">
+      <mapping from="INT" to="INTEGER"/>
+      <mapping from="BIGINT" to="BIGINT"/>
+      <mapping from="TINYINT(1)" to="BOOLEAN"/>
+      <mapping from="TINYINT" to="SMALLINT"/>
+      <mapping from="DECIMAL(p,s)" to="NUMERIC(p,s)"/>
+      <mapping from="VARCHAR(n)" to="VARCHAR(n)"/>
+      <mapping from="TEXT" to="TEXT"/>
+      <mapping from="DATETIME" to="TIMESTAMP"/>
+      <mapping from="ENUM" to="VARCHAR with CHECK constraint"/>
+      <mapping from="AUTO_INCREMENT" to="SERIAL"/>
+    </conversion>
+    
+    <conversion source="DB2" target="PostgreSQL">
+      <mapping from="INTEGER" to="INTEGER"/>
+      <mapping from="BIGINT" to="BIGINT"/>
+      <mapping from="DECIMAL(p,s)" to="NUMERIC(p,s)"/>
+      <mapping from="VARCHAR(n)" to="VARCHAR(n)"/>
+      <mapping from="CLOB" to="TEXT"/>
+      <mapping from="BLOB" to="BYTEA"/>
+      <mapping from="TIMESTAMP" to="TIMESTAMP"/>
+      <mapping from="GENERATED ALWAYS AS IDENTITY" to="SERIAL"/>
+    </conversion>
+  </conversion_matrix>
+</database_platforms>
+
+<!-- Made with Bob -->

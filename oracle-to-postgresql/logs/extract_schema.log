@@ -1,0 +1,35 @@
+2026-06-25 23:36:32,658 [INFO] ============================================================
+2026-06-25 23:36:32,658 [INFO] Oracle Schema Extractor
+2026-06-25 23:36:32,658 [INFO] Schema : HR
+2026-06-25 23:36:32,658 [INFO] Started: 2026-06-25T23:36:32.658430
+2026-06-25 23:36:32,658 [INFO] ============================================================
+2026-06-25 23:36:32,658 [INFO] Connecting to Oracle: hr@localhost:1521/XEPDB1
+2026-06-25 23:36:32,703 [INFO] Extracting tables for schema: HR
+2026-06-25 23:36:33,029 [INFO]   Found 7 tables
+2026-06-25 23:36:33,030 [INFO] Extracting columns...
+2026-06-25 23:36:33,046 [INFO]   Found 35 columns
+2026-06-25 23:36:33,047 [INFO] Extracting constraints...
+2026-06-25 23:36:33,981 [INFO]   Found 32 constraints
+2026-06-25 23:36:33,981 [INFO] Extracting constraint columns...
+2026-06-25 23:36:35,340 [INFO]   Found 34 constraint-column mappings
+2026-06-25 23:36:35,340 [INFO] Extracting indexes...
+2026-06-25 23:36:35,704 [INFO]   Found 11 non-constraint indexes
+2026-06-25 23:36:35,704 [INFO] Extracting index columns...
+2026-06-25 23:36:35,875 [INFO]   Found 21 index-column mappings
+2026-06-25 23:36:35,875 [INFO] Extracting sequences...
+2026-06-25 23:36:35,877 [INFO]   Found 3 sequences
+2026-06-25 23:36:35,877 [INFO] Extracting views...
+2026-06-25 23:36:35,882 [INFO]   Found 0 views
+2026-06-25 23:36:35,882 [INFO] Extracting triggers...
+2026-06-25 23:36:36,125 [INFO]   Found 0 triggers
+2026-06-25 23:36:36,129 [INFO]   Saved /Users/surendrajena/Desktop/2026/BoB-All/Latest-test1/dbm-agent-builder/oracle-to-postgresql/output/ddl/schema_metadata.json
+2026-06-25 23:36:36,129 [INFO] ------------------------------------------------------------
+2026-06-25 23:36:36,129 [INFO] Extraction complete.
+2026-06-25 23:36:36,129 [INFO]   Tables    : 7
+2026-06-25 23:36:36,129 [INFO]   Columns   : 35
+2026-06-25 23:36:36,129 [INFO]   Constraints: 32
+2026-06-25 23:36:36,129 [INFO]   Indexes   : 11
+2026-06-25 23:36:36,129 [INFO]   Sequences : 3
+2026-06-25 23:36:36,129 [INFO]   Views     : 0
+2026-06-25 23:36:36,130 [INFO]   Triggers  : 0
+2026-06-25 23:36:36,130 [INFO] Output      : /Users/surendrajena/Desktop/2026/BoB-All/Latest-test1/dbm-agent-builder/oracle-to-postgresql/output/ddl/schema_metadata.json

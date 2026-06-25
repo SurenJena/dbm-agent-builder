@@ -1,0 +1,20 @@
+# =============================================================================
+# Oracle Source Database Configuration
+# =============================================================================
+# Values are overridden by environment variables (see .env.template)
+# =============================================================================
+
+oracle:
+  host: "${ORACLE_HOST}"
+  port: ${ORACLE_PORT}
+  service_name: "${ORACLE_SERVICE}"
+  schema: "${ORACLE_SCHEMA}"
+  username: "${ORACLE_USER}"
+  password: "${ORACLE_PASSWORD}"
+  # Connection pool settings
+  pool_min: 1
+  pool_max: 4
+  pool_increment: 1
+  # Query settings
+  fetch_size: 10000
+  query_timeout: 3600

@@ -1,0 +1,14 @@
+2026-06-25 23:36:36,458 [INFO] ============================================================
+2026-06-25 23:36:36,459 [INFO] DDL Converter
+2026-06-25 23:36:36,460 [INFO] Oracle schema : HR  →  PostgreSQL schema: hr_schema
+2026-06-25 23:36:36,460 [INFO] Started       : 2026-06-25T23:36:36.460156
+2026-06-25 23:36:36,460 [INFO] ============================================================
+2026-06-25 23:36:36,462 [INFO] Written: /Users/surendrajena/Desktop/2026/BoB-All/Latest-test1/dbm-agent-builder/oracle-to-postgresql/output/ddl/01_tables.sql
+2026-06-25 23:36:36,463 [INFO] Written: /Users/surendrajena/Desktop/2026/BoB-All/Latest-test1/dbm-agent-builder/oracle-to-postgresql/output/ddl/02_sequences.sql
+2026-06-25 23:36:36,463 [INFO] Written: /Users/surendrajena/Desktop/2026/BoB-All/Latest-test1/dbm-agent-builder/oracle-to-postgresql/output/ddl/03_pk_uk.sql
+2026-06-25 23:36:36,464 [INFO] Written: /Users/surendrajena/Desktop/2026/BoB-All/Latest-test1/dbm-agent-builder/oracle-to-postgresql/output/ddl/04_fk.sql
+2026-06-25 23:36:36,464 [INFO] Written: /Users/surendrajena/Desktop/2026/BoB-All/Latest-test1/dbm-agent-builder/oracle-to-postgresql/output/ddl/05_check.sql
+2026-06-25 23:36:36,465 [INFO] Written: /Users/surendrajena/Desktop/2026/BoB-All/Latest-test1/dbm-agent-builder/oracle-to-postgresql/output/ddl/06_indexes.sql
+2026-06-25 23:36:36,465 [INFO] Written: /Users/surendrajena/Desktop/2026/BoB-All/Latest-test1/dbm-agent-builder/oracle-to-postgresql/output/ddl/07_views.sql
+2026-06-25 23:36:36,465 [INFO] ------------------------------------------------------------
+2026-06-25 23:36:36,465 [INFO] DDL conversion complete.

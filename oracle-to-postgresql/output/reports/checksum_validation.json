@@ -1,0 +1,73 @@
+{
+  "validated_at": "2026-06-25T23:36:39.330026",
+  "oracle_schema": "HR",
+  "pg_schema": "hr_schema",
+  "sample_size": 1000,
+  "total_tables": 7,
+  "mismatches": 0,
+  "results": [
+    {
+      "table": "JOBS",
+      "sampled": 19,
+      "matched": 19,
+      "ora_only": 0,
+      "pg_only": 0,
+      "match_pct": 100.0,
+      "status": "OK"
+    },
+    {
+      "table": "REGIONS",
+      "sampled": 4,
+      "matched": 4,
+      "ora_only": 0,
+      "pg_only": 0,
+      "match_pct": 100.0,
+      "status": "OK"
+    },
+    {
+      "table": "COUNTRIES",
+      "sampled": 25,
+      "matched": 25,
+      "ora_only": 0,
+      "pg_only": 0,
+      "match_pct": 100.0,
+      "status": "OK"
+    },
+    {
+      "table": "LOCATIONS",
+      "sampled": 23,
+      "matched": 23,
+      "ora_only": 0,
+      "pg_only": 0,
+      "match_pct": 100.0,
+      "status": "OK"
+    },
+    {
+      "table": "DEPARTMENTS",
+      "sampled": 27,
+      "matched": 27,
+      "ora_only": 0,
+      "pg_only": 0,
+      "match_pct": 100.0,
+      "status": "OK"
+    },
+    {
+      "table": "EMPLOYEES",
+      "sampled": 23,
+      "matched": 23,
+      "ora_only": 0,
+      "pg_only": 0,
+      "match_pct": 100.0,
+      "status": "OK"
+    },
+    {
+      "table": "JOB_HISTORY",
+      "sampled": 10,
+      "matched": 10,
+      "ora_only": 0,
+      "pg_only": 0,
+      "match_pct": 100.0,
+      "status": "OK"
+    }
+  ]
+}

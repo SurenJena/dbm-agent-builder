@@ -1,0 +1,1217 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<file_templates>
+  <overview>
+    <title>Migration Framework File Templates</title>
+    <description>
+      Complete code templates for all files in the migration framework.
+      These templates should be customized based on source/target platforms.
+    </description>
+  </overview>
+
+  <configuration_templates>
+    <template name=".env.template">
+      <description>Environment variables template</description>
+      <content><![CDATA[
+# Source Database Configuration
+SOURCE_DB_TYPE=oracle
+SOURCE_DB_HOST=localhost
+SOURCE_DB_PORT=1521
+SOURCE_DB_NAME=ORCL
+SOURCE_DB_USER=source_user
+SOURCE_DB_PASSWORD=source_password
+SOURCE_DB_SCHEMA=HR
+
+# Target Database Configuration
+TARGET_DB_TYPE=postgresql
+TARGET_DB_HOST=localhost
+TARGET_DB_PORT=5432
+TARGET_DB_NAME=target_db
+TARGET_DB_USER=target_user
+TARGET_DB_PASSWORD=target_password
+TARGET_DB_SCHEMA=public
+
+# Migration Configuration
+BATCH_SIZE=10000
+PARALLEL_THREADS=4
+LOG_LEVEL=INFO
+ENABLE_VALIDATION=true
+BACKUP_BEFORE_MIGRATION=true
+]]></content>
+    </template>
+
+    <template name="source_db.yaml">
+      <description>Source database configuration</description>
+      <content><![CDATA[
+database:
+  type: oracle
+  version: "19c"
+  host: ${SOURCE_DB_HOST}
+  port: ${SOURCE_DB_PORT}
+  database: ${SOURCE_DB_NAME}
+  schema: ${SOURCE_DB_SCHEMA}
+  
+authentication:
+  method: password
+  username: ${SOURCE_DB_USER}
+  password: ${SOURCE_DB_PASSWORD}
+  
+connection:
+  pool_size: 10
+  max_overflow: 20
+  timeout: 30
+  ssl_enabled: false
+  
+migration_scope:
+  include_tables: []  # Empty means all tables
+  exclude_tables: []
+  include_views: true
+  include_procedures: true
+  include_triggers: true
+  include_sequences: true
+]]></content>
+    </template>
+
+    <template name="target_db.yaml">
+      <description>Target database configuration</description>
+      <content><![CDATA[
+database:
+  type: postgresql
+  version: "15"
+  host: ${TARGET_DB_HOST}
+  port: ${TARGET_DB_PORT}
+  database: ${TARGET_DB_NAME}
+  schema: ${TARGET_DB_SCHEMA}
+  
+authentication:
+  method: password
+  username: ${TARGET_DB_USER}
+  password: ${TARGET_DB_PASSWORD}
+  
+connection:
+  pool_size: 10
+  max_overflow: 20
+  timeout: 30
+  ssl_enabled: false
+  
+optimization:
+  create_indexes_after_load: true
+  disable_triggers_during_load: true
+  use_copy_for_bulk_load: true
+  analyze_after_load: true
+]]></content>
+    </template>
+
+    <template name="migration_config.yaml">
+      <description>Migration execution configuration</description>
+      <content><![CDATA[
+migration:
+  name: "Oracle to PostgreSQL Migration"
+  description: "Migrate HR schema from Oracle 19c to PostgreSQL 15"
+  
+execution:
+  batch_size: ${BATCH_SIZE}
+  parallel_threads: ${PARALLEL_THREADS}
+  max_retries: 3
+  retry_delay_seconds: 5
+  
+phases:
+  - name: "Schema Migration"
+    enabled: true
+    order: 1
+  - name: "Data Migration"
+    enabled: true
+    order: 2
+  - name: "Constraint Migration"
+    enabled: true
+    order: 3
+  - name: "Index Migration"
+    enabled: true
+    order: 4
+  - name: "Validation"
+    enabled: true
+    order: 5
+    
+validation:
+  row_count_check: true
+  data_sampling: true
+  sample_size: 1000
+  checksum_validation: true
+  foreign_key_check: true
+  
+logging:
+  level: ${LOG_LEVEL}
+  file: "logs/migration.log"
+  console: true
+  
+backup:
+  enabled: ${BACKUP_BEFORE_MIGRATION}
+  location: "backups/"
+  compression: true
+]]></content>
+    </template>
+  </configuration_templates>
+
+  <discovery_templates>
+    <template name="extract_schema.py">
+      <description>Extract schema metadata from source database</description>
+      <content><![CDATA[
+#!/usr/bin/env python3
+"""
+Extract schema metadata from source database.
+Supports Oracle, SQL Server, MySQL, DB2.
+"""
+
+import os
+import json
+import logging
+from typing import Dict, List, Any
+from dotenv import load_dotenv
+import yaml
+
+# Load environment variables
+load_dotenv()
+
+# Configure logging
+logging.basicConfig(
+    level=os.getenv('LOG_LEVEL', 'INFO'),
+    format='%(asctime)s - %(levelname)s - %(message)s'
+)
+logger = logging.getLogger(__name__)
+
+
+class SchemaExtractor:
+    """Extract schema metadata from source database."""
+    
+    def __init__(self, config_file: str = 'config/source_db.yaml'):
+        """Initialize with configuration."""
+        with open(config_file, 'r') as f:
+            self.config = yaml.safe_load(f)
+        
+        self.db_type = self.config['database']['type']
+        self.connection = None
+        
+    def connect(self):
+        """Connect to source database."""
+        db_type = self.db_type
+        
+        if db_type == 'oracle':
+            import cx_Oracle
+            dsn = cx_Oracle.makedsn(
+                self.config['database']['host'],
+                self.config['database']['port'],
+                service_name=self.config['database']['database']
+            )
+            self.connection = cx_Oracle.connect(
+                user=os.getenv('SOURCE_DB_USER'),
+                password=os.getenv('SOURCE_DB_PASSWORD'),
+                dsn=dsn
+            )
+        elif db_type == 'sqlserver':
+            import pymssql
+            self.connection = pymssql.connect(
+                server=self.config['database']['host'],
+                port=self.config['database']['port'],
+                database=self.config['database']['database'],
+                user=os.getenv('SOURCE_DB_USER'),
+                password=os.getenv('SOURCE_DB_PASSWORD')
+            )
+        elif db_type == 'mysql':
+            import pymysql
+            self.connection = pymysql.connect(
+                host=self.config['database']['host'],
+                port=self.config['database']['port'],
+                database=self.config['database']['database'],
+                user=os.getenv('SOURCE_DB_USER'),
+                password=os.getenv('SOURCE_DB_PASSWORD')
+            )
+        elif db_type == 'db2':
+            import ibm_db
+            conn_str = f"DATABASE={self.config['database']['database']};" \
+                      f"HOSTNAME={self.config['database']['host']};" \
+                      f"PORT={self.config['database']['port']};" \
+                      f"PROTOCOL=TCPIP;" \
+                      f"UID={os.getenv('SOURCE_DB_USER')};" \
+                      f"PWD={os.getenv('SOURCE_DB_PASSWORD')};"
+            self.connection = ibm_db.connect(conn_str, "", "")
+        else:
+            raise ValueError(f"Unsupported database type: {db_type}")
+        
+        logger.info(f"Connected to {db_type} database")
+    
+    def extract_tables(self) -> List[Dict[str, Any]]:
+        """Extract table metadata."""
+        logger.info("Extracting table metadata...")
+        
+        if self.db_type == 'oracle':
+            return self._extract_oracle_tables()
+        elif self.db_type == 'sqlserver':
+            return self._extract_sqlserver_tables()
+        elif self.db_type == 'mysql':
+            return self._extract_mysql_tables()
+        elif self.db_type == 'db2':
+            return self._extract_db2_tables()
+    
+    def _extract_oracle_tables(self) -> List[Dict[str, Any]]:
+        """Extract Oracle table metadata."""
+        cursor = self.connection.cursor()
+        schema = self.config['database']['schema']
+        
+        # Get tables
+        cursor.execute("""
+            SELECT table_name, num_rows, blocks, avg_row_len
+            FROM all_tables
+            WHERE owner = :schema
+            ORDER BY table_name
+        """, schema=schema)
+        
+        tables = []
+        for row in cursor:
+            table_name = row[0]
+            
+            # Get columns
+            cursor2 = self.connection.cursor()
+            cursor2.execute("""
+                SELECT column_name, data_type, data_length, 
+                       data_precision, data_scale, nullable
+                FROM all_tab_columns
+                WHERE owner = :schema AND table_name = :table
+                ORDER BY column_id
+            """, schema=schema, table=table_name)
+            
+            columns = []
+            for col_row in cursor2:
+                columns.append({
+                    'name': col_row[0],
+                    'data_type': col_row[1],
+                    'length': col_row[2],
+                    'precision': col_row[3],
+                    'scale': col_row[4],
+                    'nullable': col_row[5] == 'Y'
+                })
+            
+            tables.append({
+                'name': table_name,
+                'row_count': row[1],
+                'size_blocks': row[2],
+                'avg_row_length': row[3],
+                'columns': columns
+            })
+        
+        logger.info(f"Extracted {len(tables)} tables")
+        return tables
+    
+    def extract_constraints(self) -> List[Dict[str, Any]]:
+        """Extract constraint metadata."""
+        logger.info("Extracting constraints...")
+        # Implementation varies by database type
+        pass
+    
+    def extract_indexes(self) -> List[Dict[str, Any]]:
+        """Extract index metadata."""
+        logger.info("Extracting indexes...")
+        # Implementation varies by database type
+        pass
+    
+    def extract_views(self) -> List[Dict[str, Any]]:
+        """Extract view metadata."""
+        logger.info("Extracting views...")
+        # Implementation varies by database type
+        pass
+    
+    def extract_procedures(self) -> List[Dict[str, Any]]:
+        """Extract stored procedure metadata."""
+        logger.info("Extracting stored procedures...")
+        # Implementation varies by database type
+        pass
+    
+    def extract_all(self) -> Dict[str, Any]:
+        """Extract all metadata."""
+        logger.info("Starting full schema extraction...")
+        
+        metadata = {
+            'database_type': self.db_type,
+            'database_version': self.config['database']['version'],
+            'schema': self.config['database']['schema'],
+            'tables': self.extract_tables(),
+            'constraints': self.extract_constraints(),
+            'indexes': self.extract_indexes(),
+            'views': self.extract_views(),
+            'procedures': self.extract_procedures()
+        }
+        
+        # Save to file
+        output_file = 'output/schema_metadata.json'
+        os.makedirs('output', exist_ok=True)
+        with open(output_file, 'w') as f:
+            json.dump(metadata, f, indent=2)
+        
+        logger.info(f"Schema metadata saved to {output_file}")
+        return metadata
+    
+    def close(self):
+        """Close database connection."""
+        if self.connection:
+            self.connection.close()
+            logger.info("Database connection closed")
+
+
+def main():
+    """Main execution."""
+    extractor = SchemaExtractor()
+    
+    try:
+        extractor.connect()
+        metadata = extractor.extract_all()
+        
+        print(f"\nExtraction Summary:")
+        print(f"  Tables: {len(metadata['tables'])}")
+        print(f"  Views: {len(metadata['views'])}")
+        print(f"  Procedures: {len(metadata['procedures'])}")
+        print(f"  Indexes: {len(metadata['indexes'])}")
+        
+    except Exception as e:
+        logger.error(f"Extraction failed: {str(e)}")
+        raise
+    finally:
+        extractor.close()
+
+
+if __name__ == '__main__':
+    main()
+]]></content>
+    </template>
+
+    <template name="analyze_dependencies.py">
+      <description>Analyze table dependencies and relationships</description>
+      <content><![CDATA[
+#!/usr/bin/env python3
+"""
+Analyze table dependencies based on foreign key relationships.
+Generate dependency graph for migration ordering.
+"""
+
+import json
+import logging
+from typing import Dict, List, Set
+from collections import defaultdict, deque
+
+logging.basicConfig(level=logging.INFO)
+logger = logging.getLogger(__name__)
+
+
+class DependencyAnalyzer:
+    """Analyze and resolve table dependencies."""
+    
+    def __init__(self, metadata_file: str = 'output/schema_metadata.json'):
+        """Initialize with schema metadata."""
+        with open(metadata_file, 'r') as f:
+            self.metadata = json.load(f)
+        
+        self.dependencies = defaultdict(set)
+        self.reverse_dependencies = defaultdict(set)
+    
+    def build_dependency_graph(self):
+        """Build dependency graph from foreign keys."""
+        logger.info("Building dependency graph...")
+        
+        for constraint in self.metadata.get('constraints', []):
+            if constraint['type'] == 'FOREIGN_KEY':
+                child_table = constraint['table_name']
+                parent_table = constraint['referenced_table']
+                
+                self.dependencies[child_table].add(parent_table)
+                self.reverse_dependencies[parent_table].add(child_table)
+        
+        logger.info(f"Built dependency graph with {len(self.dependencies)} relationships")
+    
+    def topological_sort(self) -> List[str]:
+        """
+        Perform topological sort to determine migration order.
+        Returns list of tables in dependency order.
+        """
+        logger.info("Performing topological sort...")
+        
+        # Calculate in-degree for each table
+        in_degree = defaultdict(int)
+        all_tables = set(t['name'] for t in self.metadata['tables'])
+        
+        for table in all_tables:
+            in_degree[table] = len(self.dependencies[table])
+        
+        # Queue of tables with no dependencies
+        queue = deque([t for t in all_tables if in_degree[t] == 0])
+        sorted_tables = []
+        
+        while queue:
+            table = queue.popleft()
+            sorted_tables.append(table)
+            
+            # Reduce in-degree for dependent tables
+            for dependent in self.reverse_dependencies[table]:
+                in_degree[dependent] -= 1
+                if in_degree[dependent] == 0:
+                    queue.append(dependent)
+        
+        # Check for circular dependencies
+        if len(sorted_tables) != len(all_tables):
+            remaining = all_tables - set(sorted_tables)
+            logger.warning(f"Circular dependencies detected in tables: {remaining}")
+            # Add remaining tables (will need special handling)
+            sorted_tables.extend(remaining)
+        
+        logger.info(f"Migration order determined for {len(sorted_tables)} tables")
+        return sorted_tables
+    
+    def identify_circular_dependencies(self) -> List[Set[str]]:
+        """Identify circular dependency chains."""
+        logger.info("Checking for circular dependencies...")
+        
+        visited = set()
+        rec_stack = set()
+        cycles = []
+        
+        def dfs(table, path):
+            visited.add(table)
+            rec_stack.add(table)
+            path.append(table)
+            
+            for parent in self.dependencies[table]:
+                if parent not in visited:
+                    dfs(parent, path.copy())
+                elif parent in rec_stack:
+                    # Found a cycle
+                    cycle_start = path.index(parent)
+                    cycle = set(path[cycle_start:])
+                    if cycle not in cycles:
+                        cycles.append(cycle)
+            
+            rec_stack.remove(table)
+        
+        for table in self.dependencies:
+            if table not in visited:
+                dfs(table, [])
+        
+        if cycles:
+            logger.warning(f"Found {len(cycles)} circular dependency chains")
+        else:
+            logger.info("No circular dependencies found")
+        
+        return cycles
+    
+    def generate_migration_batches(self, batch_size: int = 10) -> List[List[str]]:
+        """
+        Generate migration batches for parallel execution.
+        Tables in same batch have no dependencies on each other.
+        """
+        logger.info("Generating migration batches...")
+        
+        sorted_tables = self.topological_sort()
+        batches = []
+        current_batch = []
+        migrated = set()
+        
+        for table in sorted_tables:
+            # Check if all dependencies are migrated
+            deps = self.dependencies[table]
+            if deps.issubset(migrated):
+                current_batch.append(table)
+                
+                if len(current_batch) >= batch_size:
+                    batches.append(current_batch)
+                    migrated.update(current_batch)
+                    current_batch = []
+        
+        # Add remaining tables
+        if current_batch:
+            batches.append(current_batch)
+        
+        logger.info(f"Generated {len(batches)} migration batches")
+        return batches
+    
+    def save_dependency_graph(self, output_file: str = 'output/dependency_graph.json'):
+        """Save dependency graph to file."""
+        graph = {
+            'dependencies': {k: list(v) for k, v in self.dependencies.items()},
+            'reverse_dependencies': {k: list(v) for k, v in self.reverse_dependencies.items()},
+            'migration_order': self.topological_sort(),
+            'circular_dependencies': [list(c) for c in self.identify_circular_dependencies()],
+            'migration_batches': self.generate_migration_batches()
+        }
+        
+        with open(output_file, 'w') as f:
+            json.dump(graph, f, indent=2)
+        
+        logger.info(f"Dependency graph saved to {output_file}")
+
+
+def main():
+    """Main execution."""
+    analyzer = DependencyAnalyzer()
+    analyzer.build_dependency_graph()
+    analyzer.save_dependency_graph()
+    
+    print("\nDependency Analysis Summary:")
+    print(f"  Total tables: {len(analyzer.metadata['tables'])}")
+    print(f"  Tables with dependencies: {len(analyzer.dependencies)}")
+    print(f"  Migration batches: {len(analyzer.generate_migration_batches())}")
+
+
+if __name__ == '__main__':
+    main()
+]]></content>
+    </template>
+  </discovery_templates>
+
+  <conversion_templates>
+    <template name="ddl_converter.py">
+      <description>Convert DDL from source to target dialect</description>
+      <content><![CDATA[
+#!/usr/bin/env python3
+"""
+Convert DDL statements from source database dialect to target dialect.
+Handles data type mapping, syntax differences, and platform-specific features.
+"""
+
+import json
+import logging
+import re
+from typing import Dict, List, Any
+
+logging.basicConfig(level=logging.INFO)
+logger = logging.getLogger(__name__)
+
+
+class DDLConverter:
+    """Convert DDL between database platforms."""
+    
+    def __init__(self, source_type: str, target_type: str):
+        """Initialize converter with source and target types."""
+        self.source_type = source_type
+        self.target_type = target_type
+        self.type_mappings = self._load_type_mappings()
+    
+    def _load_type_mappings(self) -> Dict[str, str]:
+        """Load data type mappings for conversion."""
+        # This would typically load from a configuration file
+        mappings = {
+            'oracle_to_postgresql': {
+                'NUMBER': self._convert_oracle_number,
+                'VARCHAR2': lambda x: f"VARCHAR{x}",
+                'CHAR': lambda x: f"CHAR{x}",
+                'DATE': lambda x: 'TIMESTAMP',
+                'TIMESTAMP': lambda x: 'TIMESTAMP',
+                'CLOB': lambda x: 'TEXT',
+                'BLOB': lambda x: 'BYTEA',
+                'RAW': lambda x: 'BYTEA'
+            },
+            'sqlserver_to_postgresql': {
+                'INT': lambda x: 'INTEGER',
+                'BIGINT': lambda x: 'BIGINT',
+                'SMALLINT': lambda x: 'SMALLINT',
+                'TINYINT': lambda x: 'SMALLINT',
+                'BIT': lambda x: 'BOOLEAN',
+                'DECIMAL': lambda x: f"NUMERIC{x}",
+                'VARCHAR': lambda x: f"VARCHAR{x}",
+                'NVARCHAR': lambda x: f"VARCHAR{x}",
+                'DATETIME': lambda x: 'TIMESTAMP',
+                'DATETIME2': lambda x: 'TIMESTAMP',
+                'UNIQUEIDENTIFIER': lambda x: 'UUID',
+                'TEXT': lambda x: 'TEXT',
+                'IMAGE': lambda x: 'BYTEA'
+            },
+            'mysql_to_postgresql': {
+                'INT': lambda x: 'INTEGER',
+                'BIGINT': lambda x: 'BIGINT',
+                'TINYINT(1)': lambda x: 'BOOLEAN',
+                'TINYINT': lambda x: 'SMALLINT',
+                'VARCHAR': lambda x: f"VARCHAR{x}",
+                'TEXT': lambda x: 'TEXT',
+                'DATETIME': lambda x: 'TIMESTAMP',
+                'ENUM': self._convert_mysql_enum
+            }
+        }
+        
+        key = f"{source_type}_to_{target_type}"
+        return mappings.get(key, {})
+    
+    def _convert_oracle_number(self, type_spec: str) -> str:
+        """Convert Oracle NUMBER to appropriate PostgreSQL type."""
+        # Extract precision and scale
+        match = re.match(r'NUMBER\((\d+)(?:,(\d+))?\)', type_spec)
+        if not match:
+            return 'NUMERIC'
+        
+        precision = int(match.group(1))
+        scale = int(match.group(2)) if match.group(2) else 0
+        
+        if scale == 0:
+            if precision <= 9:
+                return 'INTEGER'
+            else:
+                return 'BIGINT'
+        else:
+            return f'NUMERIC({precision},{scale})'
+    
+    def _convert_mysql_enum(self, type_spec: str) -> str:
+        """Convert MySQL ENUM to PostgreSQL CHECK constraint."""
+        # Extract enum values
+        match = re.match(r"ENUM\((.*)\)", type_spec)
+        if not match:
+            return 'VARCHAR(50)'
+        
+        values = match.group(1)
+        return f"VARCHAR(50) CHECK (value IN ({values}))"
+    
+    def convert_data_type(self, source_type: str) -> str:
+        """Convert a single data type."""
+        source_type_upper = source_type.upper()
+        
+        # Try exact match first
+        if source_type_upper in self.type_mappings:
+            converter = self.type_mappings[source_type_upper]
+            if callable(converter):
+                return converter(source_type)
+            return converter
+        
+        # Try pattern match
+        for pattern, converter in self.type_mappings.items():
+            if pattern in source_type_upper:
+                if callable(converter):
+                    return converter(source_type)
+                return converter
+        
+        logger.warning(f"No mapping found for type: {source_type}")
+        return source_type
+    
+    def convert_table_ddl(self, table_metadata: Dict[str, Any]) -> str:
+        """Generate CREATE TABLE statement for target database."""
+        table_name = table_metadata['name']
+        columns = table_metadata['columns']
+        
+        ddl = f'CREATE TABLE "{table_name}" (\n'
+        
+        column_defs = []
+        for col in columns:
+            col_name = col['name']
+            col_type = self.convert_data_type(col['data_type'])
+            nullable = '' if col['nullable'] else ' NOT NULL'
+            
+            column_defs.append(f'  "{col_name}" {col_type}{nullable}')
+        
+        ddl += ',\n'.join(column_defs)
+        ddl += '\n);'
+        
+        return ddl
+    
+    def convert_index_ddl(self, index_metadata: Dict[str, Any]) -> str:
+        """Generate CREATE INDEX statement for target database."""
+        index_name = index_metadata['name']
+        table_name = index_metadata['table_name']
+        columns = index_metadata['columns']
+        unique = 'UNIQUE ' if index_metadata.get('unique', False) else ''
+        
+        column_list = ', '.join(f'"{col}"' for col in columns)
+        ddl = f'CREATE {unique}INDEX "{index_name}" ON "{table_name}" ({column_list});'
+        
+        return ddl
+    
+    def convert_constraint_ddl(self, constraint_metadata: Dict[str, Any]) -> str:
+        """Generate ALTER TABLE statement for constraint."""
+        table_name = constraint_metadata['table_name']
+        constraint_name = constraint_metadata['name']
+        constraint_type = constraint_metadata['type']
+        
+        if constraint_type == 'PRIMARY_KEY':
+            columns = ', '.join(f'"{col}"' for col in constraint_metadata['columns'])
+            ddl = f'ALTER TABLE "{table_name}" ADD CONSTRAINT "{constraint_name}" PRIMARY KEY ({columns});'
+        
+        elif constraint_type == 'FOREIGN_KEY':
+            columns = ', '.join(f'"{col}"' for col in constraint_metadata['columns'])
+            ref_table = constraint_metadata['referenced_table']
+            ref_columns = ', '.join(f'"{col}"' for col in constraint_metadata['referenced_columns'])
+            ddl = f'ALTER TABLE "{table_name}" ADD CONSTRAINT "{constraint_name}" ' \
+                  f'FOREIGN KEY ({columns}) REFERENCES "{ref_table}" ({ref_columns});'
+        
+        elif constraint_type == 'UNIQUE':
+            columns = ', '.join(f'"{col}"' for col in constraint_metadata['columns'])
+            ddl = f'ALTER TABLE "{table_name}" ADD CONSTRAINT "{constraint_name}" UNIQUE ({columns});'
+        
+        else:
+            logger.warning(f"Unsupported constraint type: {constraint_type}")
+            return ''
+        
+        return ddl
+    
+    def convert_schema(self, metadata_file: str = 'output/schema_metadata.json',
+                      output_dir: str = 'output/ddl') -> None:
+        """Convert entire schema to target DDL."""
+        logger.info("Converting schema to target DDL...")
+        
+        with open(metadata_file, 'r') as f:
+            metadata = json.load(f)
+        
+        import os
+        os.makedirs(output_dir, exist_ok=True)
+        
+        # Convert tables
+        with open(f'{output_dir}/01_tables.sql', 'w') as f:
+            for table in metadata['tables']:
+                ddl = self.convert_table_ddl(table)
+                f.write(ddl + '\n\n')
+        
+        # Convert indexes
+        with open(f'{output_dir}/02_indexes.sql', 'w') as f:
+            for index in metadata.get('indexes', []):
+                ddl = self.convert_index_ddl(index)
+                f.write(ddl + '\n')
+        
+        # Convert constraints
+        with open(f'{output_dir}/03_constraints.sql', 'w') as f:
+            for constraint in metadata.get('constraints', []):
+                ddl = self.convert_constraint_ddl(constraint)
+                if ddl:
+                    f.write(ddl + '\n')
+        
+        logger.info(f"DDL conversion complete. Files saved to {output_dir}/")
+
+
+def main():
+    """Main execution."""
+    import sys
+    
+    if len(sys.argv) < 3:
+        print("Usage: python ddl_converter.py <source_type> <target_type>")
+        sys.exit(1)
+    
+    source_type = sys.argv[1]
+    target_type = sys.argv[2]
+    
+    converter = DDLConverter(source_type, target_type)
+    converter.convert_schema()
+    
+    print(f"\nDDL conversion from {source_type} to {target_type} complete!")
+
+
+if __name__ == '__main__':
+    main()
+]]></content>
+    </template>
+  </conversion_templates>
+
+  <migration_templates>
+    <template name="data_migrator.py">
+      <description>Migrate data from source to target database</description>
+      <content><![CDATA[
+#!/usr/bin/env python3
+"""
+Migrate data from source to target database.
+Supports batch processing, parallel execution, and error recovery.
+"""
+
+import os
+import json
+import logging
+from typing import Dict, List, Any
+from datetime import datetime
+from concurrent.futures import ThreadPoolExecutor, as_completed
+from dotenv import load_dotenv
+import yaml
+
+load_dotenv()
+
+logging.basicConfig(
+    level=os.getenv('LOG_LEVEL', 'INFO'),
+    format='%(asctime)s - %(levelname)s - %(message)s',
+    handlers=[
+        logging.FileHandler('logs/data_migration.log'),
+        logging.StreamHandler()
+    ]
+)
+logger = logging.getLogger(__name__)
+
+
+class DataMigrator:
+    """Migrate data between databases."""
+    
+    def __init__(self):
+        """Initialize migrator with configuration."""
+        with open('config/migration_config.yaml', 'r') as f:
+            self.config = yaml.safe_load(f)
+        
+        self.batch_size = self.config['execution']['batch_size']
+        self.parallel_threads = self.config['execution']['parallel_threads']
+        
+        self.source_conn = None
+        self.target_conn = None
+        
+        self.stats = {
+            'tables_migrated': 0,
+            'rows_migrated': 0,
+            'errors': []
+        }
+    
+    def connect_databases(self):
+        """Connect to source and target databases."""
+        logger.info("Connecting to databases...")
+        
+        # Connect to source
+        # Implementation depends on database type
+        
+        # Connect to target
+        # Implementation depends on database type
+        
+        logger.info("Database connections established")
+    
+    def migrate_table(self, table_name: str) -> Dict[str, Any]:
+        """Migrate a single table."""
+        logger.info(f"Migrating table: {table_name}")
+        
+        start_time = datetime.now()
+        rows_migrated = 0
+        
+        try:
+            # Get row count
+            source_cursor = self.source_conn.cursor()
+            source_cursor.execute(f'SELECT COUNT(*) FROM "{table_name}"')
+            total_rows = source_cursor.fetchone()[0]
+            
+            logger.info(f"  Total rows to migrate: {total_rows}")
+            
+            # Migrate in batches
+            offset = 0
+            while offset < total_rows:
+                # Fetch batch from source
+                source_cursor.execute(
+                    f'SELECT * FROM "{table_name}" LIMIT {self.batch_size} OFFSET {offset}'
+                )
+                rows = source_cursor.fetchall()
+                
+                if not rows:
+                    break
+                
+                # Insert batch into target
+                target_cursor = self.target_conn.cursor()
+                
+                # Build INSERT statement
+                columns = [desc[0] for desc in source_cursor.description]
+                placeholders = ', '.join(['%s'] * len(columns))
+                insert_sql = f'INSERT INTO "{table_name}" ({", ".join(columns)}) VALUES ({placeholders})'
+                
+                target_cursor.executemany(insert_sql, rows)
+                self.target_conn.commit()
+                
+                rows_migrated += len(rows)
+                offset += self.batch_size
+                
+                # Log progress
+                progress = (offset / total_rows) * 100
+                logger.info(f"  Progress: {progress:.1f}% ({rows_migrated}/{total_rows} rows)")
+            
+            duration = (datetime.now() - start_time).total_seconds()
+            
+            return {
+                'table': table_name,
+                'status': 'success',
+                'rows_migrated': rows_migrated,
+                'duration_seconds': duration
+            }
+            
+        except Exception as e:
+            logger.error(f"Error migrating table {table_name}: {str(e)}")
+            return {
+                'table': table_name,
+                'status': 'error',
+                'error': str(e)
+            }
+    
+    def migrate_all_tables(self, migration_order: List[str]) -> None:
+        """Migrate all tables in dependency order."""
+        logger.info(f"Starting migration of {len(migration_order)} tables...")
+        
+        with ThreadPoolExecutor(max_workers=self.parallel_threads) as executor:
+            futures = {executor.submit(self.migrate_table, table): table 
+                      for table in migration_order}
+            
+            for future in as_completed(futures):
+                result = future.result()
+                
+                if result['status'] == 'success':
+                    self.stats['tables_migrated'] += 1
+                    self.stats['rows_migrated'] += result['rows_migrated']
+                    logger.info(f"✓ {result['table']}: {result['rows_migrated']} rows in {result['duration_seconds']:.2f}s")
+                else:
+                    self.stats['errors'].append(result)
+                    logger.error(f"✗ {result['table']}: {result['error']}")
+        
+        logger.info("Migration complete!")
+        logger.info(f"  Tables migrated: {self.stats['tables_migrated']}")
+        logger.info(f"  Total rows migrated: {self.stats['rows_migrated']}")
+        logger.info(f"  Errors: {len(self.stats['errors'])}")
+    
+    def close_connections(self):
+        """Close database connections."""
+        if self.source_conn:
+            self.source_conn.close()
+        if self.target_conn:
+            self.target_conn.close()
+        logger.info("Database connections closed")
+
+
+def main():
+    """Main execution."""
+    # Load migration order
+    with open('output/dependency_graph.json', 'r') as f:
+        dep_graph = json.load(f)
+    
+    migration_order = dep_graph['migration_order']
+    
+    migrator = DataMigrator()
+    
+    try:
+        migrator.connect_databases()
+        migrator.migrate_all_tables(migration_order)
+    except Exception as e:
+        logger.error(f"Migration failed: {str(e)}")
+        raise
+    finally:
+        migrator.close_connections()
+
+
+if __name__ == '__main__':
+    main()
+]]></content>
+    </template>
+  </migration_templates>
+
+  <validation_templates>
+    <template name="count_validator.py">
+      <description>Validate row counts between source and target</description>
+      <content><![CDATA[
+#!/usr/bin/env python3
+"""
+Validate row counts between source and target databases.
+"""
+
+import logging
+from typing import Dict, List
+import json
+
+logging.basicConfig(level=logging.INFO)
+logger = logging.getLogger(__name__)
+
+
+class CountValidator:
+    """Validate row counts after migration."""
+    
+    def __init__(self, source_conn, target_conn):
+        """Initialize with database connections."""
+        self.source_conn = source_conn
+        self.target_conn = target_conn
+        self.results = []
+    
+    def validate_table(self, table_name: str) -> Dict:
+        """Validate row count for a single table."""
+        logger.info(f"Validating table: {table_name}")
+        
+        # Get source count
+        source_cursor = self.source_conn.cursor()
+        source_cursor.execute(f'SELECT COUNT(*) FROM "{table_name}"')
+        source_count = source_cursor.fetchone()[0]
+        
+        # Get target count
+        target_cursor = self.target_conn.cursor()
+        target_cursor.execute(f'SELECT COUNT(*) FROM "{table_name}"')
+        target_count = target_cursor.fetchone()[0]
+        
+        match = source_count == target_count
+        status = '✓' if match else '✗'
+        
+        result = {
+            'table': table_name,
+            'source_count': source_count,
+            'target_count': target_count,
+            'match': match,
+            'difference': abs(source_count - target_count)
+        }
+        
+        logger.info(f"  {status} Source: {source_count}, Target: {target_count}")
+        
+        return result
+    
+    def validate_all_tables(self, tables: List[str]) -> None:
+        """Validate all tables."""
+        logger.info(f"Validating {len(tables)} tables...")
+        
+        for table in tables:
+            result = self.validate_table(table)
+            self.results.append(result)
+        
+        # Generate report
+        self.generate_report()
+    
+    def generate_report(self):
+        """Generate validation report."""
+        total_tables = len(self.results)
+        matched_tables = sum(1 for r in self.results if r['match'])
+        
+        report = {
+            'total_tables': total_tables,
+            'matched_tables': matched_tables,
+            'mismatched_tables': total_tables - matched_tables,
+            'details': self.results
+        }
+        
+        with open('output/reports/count_validation.json', 'w') as f:
+            json.dump(report, f, indent=2)
+        
+        logger.info(f"\nValidation Summary:")
+        logger.info(f"  Total tables: {total_tables}")
+        logger.info(f"  Matched: {matched_tables}")
+        logger.info(f"  Mismatched: {total_tables - matched_tables}")
+
+
+def main():
+    """Main execution."""
+    # Implementation
+    pass
+
+
+if __name__ == '__main__':
+    main()
+]]></content>
+    </template>
+  </validation_templates>
+
+  <script_templates>
+    <template name="run_migration.sh">
+      <description>Main migration execution script</description>
+      <content><![CDATA[
+#!/bin/bash
+set -e
+
+# Database Migration Execution Script
+# This script orchestrates the complete migration process
+
+echo "========================================="
+echo "Database Migration Script"
+echo "========================================="
+echo ""
+
+# Get script directory
+SCRIPT_DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
+PROJECT_ROOT="$( cd "$SCRIPT_DIR/.." && pwd )"
+
+cd "$PROJECT_ROOT"
+
+# Load environment variables
+if [ -f .env ]; then
+    export $(cat .env | grep -v '^#' | xargs)
+else
+    echo "Error: .env file not found"
+    exit 1
+fi
+
+# Create necessary directories
+mkdir -p logs
+mkdir -p output/ddl
+mkdir -p output/reports
+mkdir -p backups
+
+echo "Step 1: Validating prerequisites..."
+python3 -c "import cx_Oracle, psycopg2, yaml, dotenv" 2>/dev/null || {
+    echo "Error: Missing required Python packages"
+    echo "Run: pip install -r requirements.txt"
+    exit 1
+}
+
+echo "Step 2: Testing database connections..."
+python3 scripts/test_connections.py || {
+    echo "Error: Database connection test failed"
+    exit 1
+}
+
+echo "Step 3: Extracting source schema..."
+python3 discovery/extract_schema.py || {
+    echo "Error: Schema extraction failed"
+    exit 1
+}
+
+echo "Step 4: Analyzing dependencies..."
+python3 discovery/analyze_dependencies.py || {
+    echo "Error: Dependency analysis failed"
+    exit 1
+}
+
+echo "Step 5: Converting DDL..."
+python3 conversion/ddl_converter.py $SOURCE_DB_TYPE $TARGET_DB_TYPE || {
+    echo "Error: DDL conversion failed"
+    exit 1
+}
+
+echo "Step 6: Creating target schema..."
+psql -h $TARGET_DB_HOST -p $TARGET_DB_PORT -U $TARGET_DB_USER -d $TARGET_DB_NAME -f output/ddl/01_tables.sql || {
+    echo "Error: Schema creation failed"
+    exit 1
+}
+
+echo "Step 7: Migrating data..."
+python3 migration/data_migrator.py || {
+    echo "Error: Data migration failed"
+    exit 1
+}
+
+echo "Step 8: Creating indexes..."
+psql -h $TARGET_DB_HOST -p $TARGET_DB_PORT -U $TARGET_DB_USER -d $TARGET_DB_NAME -f output/ddl/02_indexes.sql || {
+    echo "Error: Index creation failed"
+    exit 1
+}
+
+echo "Step 9: Adding constraints..."
+psql -h $TARGET_DB_HOST -p $TARGET_DB_PORT -U $TARGET_DB_USER -d $TARGET_DB_NAME -f output/ddl/03_constraints.sql || {
+    echo "Error: Constraint creation failed"
+    exit 1
+}
+
+echo "Step 10: Validating migration..."
+python3 validation/count_validator.py || {
+    echo "Warning: Validation found discrepancies"
+}
+
+echo "Step 11: Gathering statistics..."
+psql -h $TARGET_DB_HOST -p $TARGET_DB_PORT -U $TARGET_DB_USER -d $TARGET_DB_NAME -c "ANALYZE;" || {
+    echo "Warning: Statistics gathering failed"
+}
+
+echo ""
+echo "========================================="
+echo "Migration Complete!"
+echo "========================================="
+echo "Check logs/ directory for detailed logs"
+echo "Check output/reports/ for validation reports"
+]]></content>
+    </template>
+
+    <template name="requirements.txt">
+      <description>Python dependencies</description>
+      <content><![CDATA[
+# Database drivers
+psycopg2-binary>=2.9.0
+cx_Oracle>=8.3.0
+pymssql>=2.2.0
+pymysql>=1.0.0
+ibm_db>=3.1.0
+snowflake-connector-python>=3.0.0
+
+# Configuration and utilities
+pyyaml>=6.0
+python-dotenv>=1.0.0
+
+# Testing
+pytest>=7.0.0
+pytest-cov>=4.0.0
+]]></content>
+    </template>
+  </script_templates>
+</file_templates>
+
+<!-- Made with Bob -->

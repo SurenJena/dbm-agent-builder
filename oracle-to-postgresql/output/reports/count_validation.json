@@ -1,0 +1,51 @@
+{
+  "validated_at": "2026-06-25T23:36:38.693613",
+  "oracle_schema": "HR",
+  "pg_schema": "hr_schema",
+  "total_tables": 7,
+  "mismatches": 0,
+  "results": [
+    {
+      "table": "JOBS",
+      "oracle_count": 19,
+      "pg_count": 19,
+      "match": true
+    },
+    {
+      "table": "REGIONS",
+      "oracle_count": 4,
+      "pg_count": 4,
+      "match": true
+    },
+    {
+      "table": "COUNTRIES",
+      "oracle_count": 25,
+      "pg_count": 25,
+      "match": true
+    },
+    {
+      "table": "LOCATIONS",
+      "oracle_count": 23,
+      "pg_count": 23,
+      "match": true
+    },
+    {
+      "table": "DEPARTMENTS",
+      "oracle_count": 27,
+      "pg_count": 27,
+      "match": true
+    },
+    {
+      "table": "EMPLOYEES",
+      "oracle_count": 23,
+      "pg_count": 23,
+      "match": true
+    },
+    {
+      "table": "JOB_HISTORY",
+      "oracle_count": 10,
+      "pg_count": 10,
+      "match": true
+    }
+  ]
+}

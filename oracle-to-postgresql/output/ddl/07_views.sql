@@ -1,0 +1,6 @@
+-- =============================================================
+-- 07_views.sql  —  CREATE OR REPLACE VIEW
+-- Schema: hr_schema
+-- Generated: 2026-06-25T23:36:36.462540
+-- NOTE: Oracle-specific syntax may require manual adjustment
+-- =============================================================

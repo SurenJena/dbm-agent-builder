@@ -1,0 +1,602 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<best_practices>
+  <overview>
+    <title>Database Migration Best Practices</title>
+    <description>
+      Comprehensive best practices, common pitfalls, and troubleshooting guide
+      for database migrations across platforms.
+    </description>
+  </overview>
+
+  <pre_migration>
+    <practice id="backup">
+      <title>Always Backup Before Migration</title>
+      <description>Create complete backups of source database before starting migration</description>
+      <steps>
+        <step>Full database backup</step>
+        <step>Verify backup integrity</step>
+        <step>Test restore procedure</step>
+        <step>Document backup location and timestamp</step>
+      </steps>
+      <rationale>Enables rollback if migration fails or produces unexpected results</rationale>
+    </practice>
+
+    <practice id="test_environment">
+      <title>Test in Non-Production First</title>
+      <description>Always test migration in development/staging before production</description>
+      <steps>
+        <step>Create test environment matching production</step>
+        <step>Run complete migration process</step>
+        <step>Validate results thoroughly</step>
+        <step>Document issues and resolutions</step>
+        <step>Refine migration scripts</step>
+      </steps>
+      <rationale>Identifies issues before they impact production systems</rationale>
+    </practice>
+
+    <practice id="connectivity_validation">
+      <title>Validate Connectivity and Permissions</title>
+      <description>Verify database connections and user permissions before migration</description>
+      <checks>
+        <check>Source database connectivity</check>
+        <check>Target database connectivity</check>
+        <check>Source read permissions</check>
+        <check>Target write permissions</check>
+        <check>Network bandwidth and latency</check>
+      </checks>
+    </practice>
+
+    <practice id="capacity_planning">
+      <title>Plan for Capacity and Performance</title>
+      <description>Ensure target database has sufficient resources</description>
+      <considerations>
+        <item>Storage capacity (data + indexes + overhead)</item>
+        <item>Memory requirements</item>
+        <item>CPU capacity for parallel operations</item>
+        <item>Network bandwidth for data transfer</item>
+        <item>Temporary space for sorting and indexing</item>
+      </considerations>
+    </practice>
+  </pre_migration>
+
+  <during_migration>
+    <practice id="phased_approach">
+      <title>Use Phased Migration Approach</title>
+      <description>Break migration into manageable phases with validation checkpoints</description>
+      <phases>
+        <phase order="1">Schema migration (DDL)</phase>
+        <phase order="2">Data migration (DML)</phase>
+        <phase order="3">Constraint creation</phase>
+        <phase order="4">Index creation</phase>
+        <phase order="5">Validation and testing</phase>
+      </phases>
+      <rationale>Easier to identify and fix issues at each stage</rationale>
+    </practice>
+
+    <practice id="batch_processing">
+      <title>Process Data in Batches</title>
+      <description>Migrate data in manageable batches rather than all at once</description>
+      <benefits>
+        <benefit>Reduces memory consumption</benefit>
+        <benefit>Enables progress tracking</benefit>
+        <benefit>Allows for pause/resume</benefit>
+        <benefit>Easier error recovery</benefit>
+      </benefits>
+      <recommended_batch_size>10,000 - 50,000 rows depending on row size</recommended_batch_size>
+    </practice>
+
+    <practice id="parallel_execution">
+      <title>Leverage Parallel Execution</title>
+      <description>Use parallel threads for independent tables</description>
+      <guidelines>
+        <guideline>Respect dependency order</guideline>
+        <guideline>Limit concurrent connections</guideline>
+        <guideline>Monitor system resources</guideline>
+        <guideline>Use connection pooling</guideline>
+      </guidelines>
+      <recommended_threads>4-8 threads for most scenarios</recommended_threads>
+    </practice>
+
+    <practice id="index_strategy">
+      <title>Optimize Index Creation Timing</title>
+      <description>Create indexes after data load for better performance</description>
+      <strategy>
+        <step order="1">Create tables without indexes</step>
+        <step order="2">Load data</step>
+        <step order="3">Create indexes</step>
+        <step order="4">Gather statistics</step>
+      </strategy>
+      <performance_gain>Can reduce migration time by 30-50%</performance_gain>
+    </practice>
+
+    <practice id="monitoring">
+      <title>Monitor Progress and Performance</title>
+      <description>Continuously monitor migration progress and system health</description>
+      <metrics_to_track>
+        <metric>Tables/rows migrated</metric>
+        <metric>Migration speed (rows/second)</metric>
+        <metric>Error count and types</metric>
+        <metric>Database CPU and memory usage</metric>
+        <metric>Network throughput</metric>
+        <metric>Disk I/O</metric>
+      </metrics_to_track>
+    </practice>
+
+    <practice id="logging">
+      <title>Maintain Comprehensive Logs</title>
+      <description>Log all operations with timestamps and details</description>
+      <log_levels>
+        <level>INFO: Normal operations and progress</level>
+        <level>WARNING: Non-critical issues</level>
+        <level>ERROR: Failures requiring attention</level>
+        <level>DEBUG: Detailed troubleshooting information</level>
+      </log_levels>
+      <log_retention>Keep logs for at least 30 days post-migration</log_retention>
+    </practice>
+  </during_migration>
+
+  <post_migration>
+    <practice id="validation">
+      <title>Comprehensive Validation</title>
+      <description>Thoroughly validate migrated data before cutover</description>
+      <validation_types>
+        <type>Row count validation</type>
+        <type>Data sampling and comparison</type>
+        <type>Checksum validation for critical tables</type>
+        <type>Foreign key integrity checks</type>
+        <type>NULL value handling verification</type>
+        <type>Date/time format validation</type>
+        <type>Character encoding validation</type>
+      </validation_types>
+    </practice>
+
+    <practice id="performance_testing">
+      <title>Performance Testing and Optimization</title>
+      <description>Test and optimize query performance on target database</description>
+      <tests>
+        <test>Run representative queries</test>
+        <test>Compare execution times with source</test>
+        <test>Analyze query plans</test>
+        <test>Identify missing or inefficient indexes</test>
+        <test>Test under load</test>
+      </tests>
+    </practice>
+
+    <practice id="statistics">
+      <title>Gather Database Statistics</title>
+      <description>Update database statistics for optimal query planning</description>
+      <commands>
+        <command platform="postgresql">ANALYZE;</command>
+        <command platform="oracle">EXEC DBMS_STATS.GATHER_SCHEMA_STATS('schema_name');</command>
+        <command platform="sqlserver">UPDATE STATISTICS table_name;</command>
+      </commands>
+    </practice>
+
+    <practice id="documentation">
+      <title>Document Everything</title>
+      <description>Create comprehensive documentation of migration process</description>
+      <documents>
+        <document>Migration plan and timeline</document>
+        <document>Schema mapping and conversions</document>
+        <document>Data type mappings</document>
+        <document>Known issues and workarounds</document>
+        <document>Performance benchmarks</document>
+        <document>Rollback procedures</document>
+        <document>Post-migration tasks</document>
+      </documents>
+    </practice>
+  </post_migration>
+
+  <common_pitfalls>
+    <pitfall id="data_type_mismatch">
+      <title>Data Type Mismatches</title>
+      <description>Incorrect data type mappings causing data loss or errors</description>
+      <examples>
+        <example>Oracle NUMBER without precision → PostgreSQL INTEGER (may truncate large values)</example>
+        <example>SQL Server DATETIME → PostgreSQL DATE (loses time component)</example>
+        <example>MySQL TINYINT(1) → PostgreSQL SMALLINT (should be BOOLEAN)</example>
+      </examples>
+      <solution>Carefully review and test data type mappings before migration</solution>
+    </pitfall>
+
+    <pitfall id="character_encoding">
+      <title>Character Encoding Issues</title>
+      <description>Incorrect character encoding causing data corruption</description>
+      <symptoms>
+        <symptom>Special characters display incorrectly</symptom>
+        <symptom>Accented characters become question marks</symptom>
+        <symptom>Multi-byte characters truncated</symptom>
+      </symptoms>
+      <solution>Ensure consistent UTF-8 encoding throughout migration process</solution>
+    </pitfall>
+
+    <pitfall id="null_handling">
+      <title>NULL Value Handling</title>
+      <description>Different NULL semantics between databases</description>
+      <issues>
+        <issue>Oracle treats empty strings as NULL</issue>
+        <issue>SQL Server ISNULL vs PostgreSQL COALESCE</issue>
+        <issue>NULL in unique constraints</issue>
+      </issues>
+      <solution>Explicitly handle NULL values in conversion logic</solution>
+    </pitfall>
+
+    <pitfall id="case_sensitivity">
+      <title>Case Sensitivity Differences</title>
+      <description>Different case sensitivity rules between databases</description>
+      <differences>
+        <difference>Oracle: case-insensitive by default (unless quoted)</difference>
+        <difference>PostgreSQL: case-sensitive for quoted identifiers</difference>
+        <difference>MySQL: depends on operating system</difference>
+      </differences>
+      <solution>Use consistent quoting and case conventions</solution>
+    </pitfall>
+
+    <pitfall id="transaction_size">
+      <title>Transaction Size Too Large</title>
+      <description>Attempting to migrate too much data in single transaction</description>
+      <problems>
+        <problem>Excessive memory usage</problem>
+        <problem>Long-running transactions blocking other operations</problem>
+        <problem>Transaction log overflow</problem>
+        <problem>Difficult rollback on error</problem>
+      </problems>
+      <solution>Use batch processing with appropriate transaction boundaries</solution>
+    </pitfall>
+
+    <pitfall id="foreign_key_order">
+      <title>Foreign Key Constraint Violations</title>
+      <description>Migrating child tables before parent tables, OR re-running migration
+        when FK constraints from a prior run are still present (circular FK schemas).</description>
+      <solution>
+        <step>Analyze foreign key dependencies (topological sort)</step>
+        <step>ALWAYS drop all FK constraints immediately before Phase 5 (data load)</step>
+        <step>Re-apply FK constraints in Phase 6 (post-data DDL) via pg_constraint NOT EXISTS guards</step>
+        <step>This is mandatory for re-runnable migrations — not optional</step>
+      </solution>
+      <example>
+        Oracle HR schema: DEPARTMENTS.MANAGER_ID → EMPLOYEES, EMPLOYEES.DEPARTMENT_ID → DEPARTMENTS.
+        Circular FK means neither table can load first if FKs are present.
+        Solution: drop FKs before load, re-apply after. Phase 6 handles this unconditionally.
+      </example>
+    </pitfall>
+
+    <pitfall id="copy_from_double_quoting">
+      <title>psycopg2 copy_from() Double-Quoting Identifiers</title>
+      <description>
+        copy_from(table, columns) applies its own quoting internally. Passing pre-quoted
+        identifiers results in double-quoting: "hr_schema"."TABLE" becomes ""hr_schema"."TABLE"".
+        Tables created with double-quoted uppercase names cannot be found.
+      </description>
+      <solution>
+        <step>NEVER use copy_from() for migrations with quoted identifiers</step>
+        <step>ALWAYS use copy_expert() with an explicit COPY SQL string you write</step>
+        <step>In copy_expert() you control all quoting — same rule as cur.execute()</step>
+      </solution>
+      <correct_pattern>
+        col_expr = ", ".join(f'"{{c}}"' for c in columns)
+        sql = f'COPY "{{schema}}"."{{table}}" ({{col_expr}}) FROM STDIN WITH (FORMAT text, DELIMITER E\'\\t\', NULL \'\\N\')'
+        cur.copy_expert(sql, buf)
+      </correct_pattern>
+    </pitfall>
+
+    <pitfall id="truncate_before_load">
+      <title>Duplicate Key Violations on Re-run</title>
+      <description>
+        Not truncating target tables before data load causes duplicate PK violations
+        when the migration is re-run. Gating truncate behind an env-var flag is wrong —
+        it makes idempotency opt-in instead of guaranteed.
+      </description>
+      <solution>
+        <step>ALWAYS truncate each target table unconditionally before loading</step>
+        <step>Use TRUNCATE TABLE "schema"."TABLE" CASCADE</step>
+        <step>CASCADE is safe — FK constraints are dropped before load (Pre-Phase 5) and
+          re-applied after (Phase 6), so no child rows exist at truncation time</step>
+      </solution>
+    </pitfall>
+
+    <pitfall id="check_constraint_case">
+      <title>CHECK Constraint Column Name Case Mismatch</title>
+      <description>
+        Oracle stores search_condition with lowercase identifiers (e.g. "end_date > start_date")
+        but PostgreSQL columns were created with double-quoted uppercase names ("END_DATE").
+        Quoting without uppercasing produces "end_date" which PostgreSQL cannot resolve.
+      </description>
+      <solution>
+        <step>Token-level rewriter MUST uppercase each bare identifier before quoting it</step>
+        <step>result.append(f'"{{tok.upper()}}"')  ← CORRECT</step>
+        <step>result.append(f'"{{tok}}"')           ← WRONG</step>
+      </solution>
+    </pitfall>
+
+    <pitfall id="bash_version_compatibility">
+      <title>Bash 4+ Operators Fail on macOS (bash 3.2)</title>
+      <description>
+        macOS ships bash 3.2 (frozen since 2007 due to GPLv3). The parameter expansion
+        operators ^^ (uppercase) and ,, (lowercase) are bash 4.0+ only and raise
+        "bad substitution" on macOS, aborting the migration script.
+      </description>
+      <solution>
+        <step>NEVER use ${VAR^^} or ${VAR,,} in any shell script</step>
+        <step>ALWAYS use tr for case conversion — it is POSIX-portable</step>
+        <step>CORRECT: $(echo "${VAR}" | tr '[:lower:]' '[:upper:]')</step>
+        <step>CORRECT: $(echo "${VAR}" | tr '[:upper:]' '[:lower:]')</step>
+      </solution>
+    </pitfall>
+
+    <pitfall id="index_during_load">
+      <title>Creating Indexes Before Data Load</title>
+      <description>Indexes slow down data insertion significantly</description>
+      <impact>Can increase migration time by 2-5x</impact>
+      <solution>Create indexes after data load completes</solution>
+    </pitfall>
+
+    <pitfall id="missing_validation">
+      <title>Insufficient Validation</title>
+      <description>Not validating data thoroughly after migration</description>
+      <consequences>
+        <consequence>Data loss discovered after cutover</consequence>
+        <consequence>Data corruption not detected</consequence>
+        <consequence>Missing records</consequence>
+      </consequences>
+      <solution>Implement comprehensive validation suite</solution>
+    </pitfall>
+  </common_pitfalls>
+
+  <troubleshooting>
+    <issue id="connection_timeout">
+      <title>Connection Timeouts</title>
+      <symptoms>
+        <symptom>Intermittent connection failures</symptom>
+        <symptom>"Connection timed out" errors</symptom>
+      </symptoms>
+      <causes>
+        <cause>Network latency</cause>
+        <cause>Firewall blocking connections</cause>
+        <cause>Database server overloaded</cause>
+      </causes>
+      <solutions>
+        <solution>Increase connection timeout settings</solution>
+        <solution>Implement retry logic with exponential backoff</solution>
+        <solution>Use connection pooling</solution>
+        <solution>Check network configuration and firewall rules</solution>
+      </solutions>
+    </issue>
+
+    <issue id="out_of_memory">
+      <title>Out of Memory Errors</title>
+      <symptoms>
+        <symptom>Process crashes with OOM error</symptom>
+        <symptom>System becomes unresponsive</symptom>
+      </symptoms>
+      <causes>
+        <cause>Batch size too large</cause>
+        <cause>Too many parallel threads</cause>
+        <cause>Large LOB objects</cause>
+      </causes>
+      <solutions>
+        <solution>Reduce batch size</solution>
+        <solution>Reduce number of parallel threads</solution>
+        <solution>Stream large objects instead of loading into memory</solution>
+        <solution>Increase available memory</solution>
+      </solutions>
+    </issue>
+
+    <issue id="slow_migration">
+      <title>Slow Migration Performance</title>
+      <symptoms>
+        <symptom>Migration taking much longer than expected</symptom>
+        <symptom>Low throughput (rows/second)</symptom>
+      </symptoms>
+      <causes>
+        <cause>Indexes created before data load</cause>
+        <cause>Single-threaded execution</cause>
+        <cause>Network bottleneck</cause>
+        <cause>Insufficient database resources</cause>
+      </causes>
+      <solutions>
+        <solution>Drop indexes before load, recreate after</solution>
+        <solution>Enable parallel execution</solution>
+        <solution>Increase batch size</solution>
+        <solution>Use bulk load utilities (COPY, BULK INSERT)</solution>
+        <solution>Optimize network configuration</solution>
+      </solutions>
+    </issue>
+
+    <issue id="data_mismatch">
+      <title>Data Validation Failures</title>
+      <symptoms>
+        <symptom>Row counts don't match</symptom>
+        <symptom>Data values differ between source and target</symptom>
+      </symptoms>
+      <causes>
+        <cause>Data type conversion issues</cause>
+        <cause>Character encoding problems</cause>
+        <cause>Timezone conversion errors</cause>
+        <cause>Incomplete migration</cause>
+      </causes>
+      <solutions>
+        <solution>Review data type mappings</solution>
+        <solution>Check character encoding settings</solution>
+        <solution>Verify timezone handling</solution>
+        <solution>Re-run migration for affected tables</solution>
+        <solution>Implement data sampling and comparison</solution>
+      </solutions>
+    </issue>
+
+    <issue id="constraint_violations">
+      <title>Constraint Violation Errors</title>
+      <symptoms>
+        <symptom>Foreign key constraint violations</symptom>
+        <symptom>Unique constraint violations</symptom>
+        <symptom>Check constraint violations</symptom>
+      </symptoms>
+      <causes>
+        <cause>Incorrect migration order</cause>
+        <cause>Data quality issues in source</cause>
+        <cause>Constraint definition differences</cause>
+      </causes>
+      <solutions>
+        <solution>Migrate tables in dependency order</solution>
+        <solution>Temporarily disable constraints during migration</solution>
+        <solution>Clean up data quality issues in source</solution>
+        <solution>Review and adjust constraint definitions</solution>
+      </solutions>
+    </issue>
+  </troubleshooting>
+
+  <performance_optimization>
+    <optimization id="bulk_loading">
+      <title>Use Bulk Loading Methods</title>
+      <description>Leverage database-specific bulk loading utilities</description>
+      <methods>
+        <method platform="postgresql">
+          <name>COPY command</name>
+          <description>Fastest way to load data into PostgreSQL</description>
+          <example>COPY table_name FROM '/path/to/file.csv' WITH (FORMAT csv, HEADER true);</example>
+        </method>
+        <method platform="sqlserver">
+          <name>BULK INSERT</name>
+          <description>High-performance bulk load</description>
+          <example>BULK INSERT table_name FROM '/path/to/file.csv' WITH (FIELDTERMINATOR = ',', ROWTERMINATOR = '\n');</example>
+        </method>
+        <method platform="oracle">
+          <name>SQL*Loader</name>
+          <description>Oracle's bulk loading utility</description>
+        </method>
+      </methods>
+    </optimization>
+
+    <optimization id="disable_logging">
+      <title>Minimize Transaction Logging</title>
+      <description>Reduce logging overhead during bulk operations</description>
+      <techniques>
+        <technique platform="postgresql">Use UNLOGGED tables for temporary staging</technique>
+        <technique platform="sqlserver">Use BULK_LOGGED recovery model</technique>
+        <technique platform="oracle">Use NOLOGGING option</technique>
+      </techniques>
+      <warning>Ensure backups are taken before disabling logging</warning>
+    </optimization>
+
+    <optimization id="parallel_dml">
+      <title>Enable Parallel DML</title>
+      <description>Use parallel execution for data manipulation</description>
+      <configuration>
+        <setting platform="postgresql">max_parallel_workers_per_gather</setting>
+        <setting platform="oracle">PARALLEL hint or ALTER SESSION</setting>
+      </configuration>
+    </optimization>
+
+    <optimization id="memory_tuning">
+      <title>Optimize Memory Settings</title>
+      <description>Tune database memory parameters for migration workload</description>
+      <parameters>
+        <parameter platform="postgresql">
+          <name>shared_buffers</name>
+          <recommendation>25% of RAM</recommendation>
+        </parameter>
+        <parameter platform="postgresql">
+          <name>work_mem</name>
+          <recommendation>Increase for sorting and hashing operations</recommendation>
+        </parameter>
+        <parameter platform="postgresql">
+          <name>maintenance_work_mem</name>
+          <recommendation>Increase for index creation</recommendation>
+        </parameter>
+      </parameters>
+    </optimization>
+  </performance_optimization>
+
+  <security_considerations>
+    <consideration id="credential_management">
+      <title>Secure Credential Management</title>
+      <description>Never store credentials in code or version control</description>
+      <best_practices>
+        <practice>Use environment variables</practice>
+        <practice>Use secret management systems (HashiCorp Vault, AWS Secrets Manager)</practice>
+        <practice>Implement least privilege access</practice>
+        <practice>Rotate credentials after migration</practice>
+      </best_practices>
+    </consideration>
+
+    <consideration id="encryption">
+      <title>Data Encryption</title>
+      <description>Encrypt data in transit and at rest</description>
+      <requirements>
+        <requirement>Use SSL/TLS for database connections</requirement>
+        <requirement>Encrypt backup files</requirement>
+        <requirement>Encrypt sensitive columns if required</requirement>
+      </requirements>
+    </consideration>
+
+    <consideration id="audit_logging">
+      <title>Audit Logging</title>
+      <description>Maintain audit trail of migration activities</description>
+      <log_items>
+        <item>Who performed the migration</item>
+        <item>When migration was performed</item>
+        <item>What data was migrated</item>
+        <item>Any errors or issues encountered</item>
+      </log_items>
+    </consideration>
+
+    <consideration id="compliance">
+      <title>Compliance Requirements</title>
+      <description>Ensure migration meets regulatory requirements</description>
+      <regulations>
+        <regulation>GDPR: Data protection and privacy</regulation>
+        <regulation>HIPAA: Healthcare data security</regulation>
+        <regulation>PCI DSS: Payment card data</regulation>
+        <regulation>SOX: Financial data integrity</regulation>
+      </regulations>
+    </consideration>
+  </security_considerations>
+
+  <rollback_strategy>
+    <principle>Always have a rollback plan before starting migration</principle>
+    
+    <rollback_methods>
+      <method id="backup_restore">
+        <title>Restore from Backup</title>
+        <description>Restore source database from pre-migration backup</description>
+        <when_to_use>Complete migration failure</when_to_use>
+        <steps>
+          <step>Stop application access to target database</step>
+          <step>Restore source database from backup</step>
+          <step>Verify restore integrity</step>
+          <step>Resume application access to source</step>
+        </steps>
+      </method>
+
+      <method id="reverse_migration">
+        <title>Reverse Migration</title>
+        <description>Migrate data back from target to source</description>
+        <when_to_use>Partial migration or data quality issues</when_to_use>
+        <requirements>
+          <requirement>Keep source database intact during migration</requirement>
+          <requirement>Have reverse migration scripts prepared</requirement>
+        </requirements>
+      </method>
+
+      <method id="dns_switchback">
+        <title>DNS/Connection String Switchback</title>
+        <description>Redirect application to source database</description>
+        <when_to_use>Post-cutover issues discovered</when_to_use>
+        <steps>
+          <step>Update DNS or connection strings</step>
+          <step>Restart applications</step>
+          <step>Verify connectivity to source</step>
+        </steps>
+      </method>
+    </rollback_methods>
+
+    <testing>
+      <test>Test rollback procedures before production migration</test>
+      <test>Document rollback time estimates</test>
+      <test>Identify rollback decision points</test>
+      <test>Define rollback criteria and thresholds</test>
+    </testing>
+  </rollback_strategy>
+</best_practices>
+
+<!-- Made with Bob -->

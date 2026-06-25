@@ -1,0 +1,56 @@
+# =============================================================================
+# Migration Configuration
+# =============================================================================
+
+migration:
+  # Schema to migrate
+  source_schema: "${ORACLE_SCHEMA}"
+  target_schema: "${PG_SCHEMA}"
+
+  # Migration scope
+  include_tables: []       # Empty = all tables
+  exclude_tables: []       # Tables to skip
+  include_views: true
+  include_sequences: true
+  include_indexes: true
+  include_constraints: true
+  include_triggers: false  # Triggers require manual review
+
+  # Data migration
+  batch_size: 10000
+  max_workers: 4
+  truncate_before_load: true   # Always truncate for idempotency
+
+  # Validation
+  run_count_validation: true
+  run_checksum_validation: true
+  checksum_sample_size: 1000
+
+  # Output
+  output_dir: "./output"
+  log_dir: "./logs"
+  log_level: "INFO"
+
+# Data type mappings: Oracle → PostgreSQL
+type_mappings:
+  NUMBER:          "NUMERIC"
+  NUMBER_INT:      "INTEGER"       # NUMBER(p,0) where p <= 9
+  NUMBER_BIGINT:   "BIGINT"        # NUMBER(p,0) where p <= 18
+  VARCHAR2:        "VARCHAR"
+  NVARCHAR2:       "VARCHAR"
+  CHAR:            "CHAR"
+  NCHAR:           "CHAR"
+  CLOB:            "TEXT"
+  NCLOB:           "TEXT"
+  BLOB:            "BYTEA"
+  DATE:            "TIMESTAMP"
+  TIMESTAMP:       "TIMESTAMP"
+  FLOAT:           "DOUBLE PRECISION"
+  BINARY_FLOAT:    "REAL"
+  BINARY_DOUBLE:   "DOUBLE PRECISION"
+  RAW:             "BYTEA"
+  LONG:            "TEXT"
+  LONG_RAW:        "BYTEA"
+  XMLTYPE:         "XML"
+  INTERVAL_YM:     "INTERVAL YEAR TO MONTH"
+  INTERVAL_DS:     "INTERVAL DAY TO SECOND"

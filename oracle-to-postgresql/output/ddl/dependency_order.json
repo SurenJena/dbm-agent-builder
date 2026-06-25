@@ -1,0 +1,42 @@
+{
+  "schema": "HR",
+  "analyzed_at": "2026-06-25T23:36:36.274457",
+  "migration_order": [
+    "JOBS",
+    "REGIONS",
+    "COUNTRIES",
+    "LOCATIONS",
+    "DEPARTMENTS",
+    "EMPLOYEES",
+    "JOB_HISTORY"
+  ],
+  "dependency_graph": {
+    "COUNTRIES": [
+      "REGIONS"
+    ],
+    "DEPARTMENTS": [
+      "EMPLOYEES",
+      "LOCATIONS"
+    ],
+    "EMPLOYEES": [
+      "JOBS",
+      "DEPARTMENTS"
+    ],
+    "JOBS": [],
+    "JOB_HISTORY": [
+      "JOBS",
+      "EMPLOYEES",
+      "DEPARTMENTS"
+    ],
+    "LOCATIONS": [
+      "COUNTRIES"
+    ],
+    "REGIONS": []
+  },
+  "circular_dependencies": [
+    "DEPARTMENTS",
+    "EMPLOYEES",
+    "JOB_HISTORY"
+  ],
+  "total_tables": 7
+}

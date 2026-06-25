@@ -1,0 +1,40 @@
+2026-06-25 23:36:37,376 [INFO] ============================================================
+2026-06-25 23:36:37,376 [INFO] Data Migrator
+2026-06-25 23:36:37,376 [INFO] Oracle: HR  →  PostgreSQL: hr_schema
+2026-06-25 23:36:37,376 [INFO] Batch size: 10000
+2026-06-25 23:36:37,376 [INFO] Started:    2026-06-25T23:36:37.376679
+2026-06-25 23:36:37,376 [INFO] ============================================================
+2026-06-25 23:36:37,471 [INFO] Migrating table: JOBS (4 columns)
+2026-06-25 23:36:37,479 [INFO]   TRUNCATE hr_schema.JOBS — OK
+2026-06-25 23:36:37,486 [INFO]   → JOBS: 19 rows loaded so far
+2026-06-25 23:36:37,486 [INFO]   ✓ JOBS: 19 rows
+2026-06-25 23:36:37,487 [INFO] Migrating table: REGIONS (2 columns)
+2026-06-25 23:36:37,496 [INFO]   TRUNCATE hr_schema.REGIONS — OK
+2026-06-25 23:36:37,502 [INFO]   → REGIONS: 4 rows loaded so far
+2026-06-25 23:36:37,502 [INFO]   ✓ REGIONS: 4 rows
+2026-06-25 23:36:37,503 [INFO] Migrating table: COUNTRIES (3 columns)
+2026-06-25 23:36:37,512 [INFO]   TRUNCATE hr_schema.COUNTRIES — OK
+2026-06-25 23:36:37,518 [INFO]   → COUNTRIES: 25 rows loaded so far
+2026-06-25 23:36:37,518 [INFO]   ✓ COUNTRIES: 25 rows
+2026-06-25 23:36:37,518 [INFO] Migrating table: LOCATIONS (6 columns)
+2026-06-25 23:36:37,524 [INFO]   TRUNCATE hr_schema.LOCATIONS — OK
+2026-06-25 23:36:37,531 [INFO]   → LOCATIONS: 23 rows loaded so far
+2026-06-25 23:36:37,531 [INFO]   ✓ LOCATIONS: 23 rows
+2026-06-25 23:36:37,531 [INFO] Migrating table: DEPARTMENTS (4 columns)
+2026-06-25 23:36:37,537 [INFO]   TRUNCATE hr_schema.DEPARTMENTS — OK
+2026-06-25 23:36:37,545 [INFO]   → DEPARTMENTS: 27 rows loaded so far
+2026-06-25 23:36:37,545 [INFO]   ✓ DEPARTMENTS: 27 rows
+2026-06-25 23:36:37,545 [INFO] Migrating table: EMPLOYEES (11 columns)
+2026-06-25 23:36:37,554 [INFO]   TRUNCATE hr_schema.EMPLOYEES — OK
+2026-06-25 23:36:37,561 [INFO]   → EMPLOYEES: 23 rows loaded so far
+2026-06-25 23:36:37,562 [INFO]   ✓ EMPLOYEES: 23 rows
+2026-06-25 23:36:37,562 [INFO] Migrating table: JOB_HISTORY (5 columns)
+2026-06-25 23:36:37,567 [INFO]   TRUNCATE hr_schema.JOB_HISTORY — OK
+2026-06-25 23:36:37,574 [INFO]   → JOB_HISTORY: 10 rows loaded so far
+2026-06-25 23:36:37,574 [INFO]   ✓ JOB_HISTORY: 10 rows
+2026-06-25 23:36:37,576 [INFO] ============================================================
+2026-06-25 23:36:37,576 [INFO] Migration Summary
+2026-06-25 23:36:37,577 [INFO]   Tables migrated: 7
+2026-06-25 23:36:37,577 [INFO]   Total rows     : 131
+2026-06-25 23:36:37,577 [INFO]   Errors         : 0
+2026-06-25 23:36:37,582 [INFO] Report: /Users/surendrajena/Desktop/2026/BoB-All/Latest-test1/dbm-agent-builder/oracle-to-postgresql/output/reports/migration_summary.json

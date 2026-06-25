@@ -1,0 +1,1310 @@
+{
+  "schema": "HR",
+  "extracted_at": "2026-06-25T23:36:36.126177",
+  "tables": [
+    {
+      "table_name": "COUNTRIES",
+      "num_rows": null,
+      "last_analyzed": null,
+      "partitioned": "NO",
+      "status": "VALID"
+    },
+    {
+      "table_name": "DEPARTMENTS",
+      "num_rows": null,
+      "last_analyzed": null,
+      "partitioned": "NO",
+      "status": "VALID"
+    },
+    {
+      "table_name": "EMPLOYEES",
+      "num_rows": null,
+      "last_analyzed": null,
+      "partitioned": "NO",
+      "status": "VALID"
+    },
+    {
+      "table_name": "JOBS",
+      "num_rows": null,
+      "last_analyzed": null,
+      "partitioned": "NO",
+      "status": "VALID"
+    },
+    {
+      "table_name": "JOB_HISTORY",
+      "num_rows": null,
+      "last_analyzed": null,
+      "partitioned": "NO",
+      "status": "VALID"
+    },
+    {
+      "table_name": "LOCATIONS",
+      "num_rows": null,
+      "last_analyzed": null,
+      "partitioned": "NO",
+      "status": "VALID"
+    },
+    {
+      "table_name": "REGIONS",
+      "num_rows": null,
+      "last_analyzed": null,
+      "partitioned": "NO",
+      "status": "VALID"
+    }
+  ],
+  "columns": [
+    {
+      "table_name": "COUNTRIES",
+      "column_name": "COUNTRY_ID",
+      "column_id": 1,
+      "data_type": "CHAR",
+      "data_length": 2,
+      "data_precision": null,
+      "data_scale": null,
+      "nullable": "N",
+      "data_default": null,
+      "char_length": 2
+    },
+    {
+      "table_name": "COUNTRIES",
+      "column_name": "COUNTRY_NAME",
+      "column_id": 2,
+      "data_type": "VARCHAR2",
+      "data_length": 40,
+      "data_precision": null,
+      "data_scale": null,
+      "nullable": "Y",
+      "data_default": null,
+      "char_length": 40
+    },
+    {
+      "table_name": "COUNTRIES",
+      "column_name": "REGION_ID",
+      "column_id": 3,
+      "data_type": "NUMBER",
+      "data_length": 22,
+      "data_precision": null,
+      "data_scale": null,
+      "nullable": "Y",
+      "data_default": null,
+      "char_length": 0
+    },
+    {
+      "table_name": "DEPARTMENTS",
+      "column_name": "DEPARTMENT_ID",
+      "column_id": 1,
+      "data_type": "NUMBER",
+      "data_length": 22,
+      "data_precision": 4,
+      "data_scale": 0,
+      "nullable": "N",
+      "data_default": null,
+      "char_length": 0
+    },
+    {
+      "table_name": "DEPARTMENTS",
+      "column_name": "DEPARTMENT_NAME",
+      "column_id": 2,
+      "data_type": "VARCHAR2",
+      "data_length": 30,
+      "data_precision": null,
+      "data_scale": null,
+      "nullable": "N",
+      "data_default": null,
+      "char_length": 30
+    },
+    {
+      "table_name": "DEPARTMENTS",
+      "column_name": "MANAGER_ID",
+      "column_id": 3,
+      "data_type": "NUMBER",
+      "data_length": 22,
+      "data_precision": 6,
+      "data_scale": 0,
+      "nullable": "Y",
+      "data_default": null,
+      "char_length": 0
+    },
+    {
+      "table_name": "DEPARTMENTS",
+      "column_name": "LOCATION_ID",
+      "column_id": 4,
+      "data_type": "NUMBER",
+      "data_length": 22,
+      "data_precision": 4,
+      "data_scale": 0,
+      "nullable": "Y",
+      "data_default": null,
+      "char_length": 0
+    },
+    {
+      "table_name": "EMPLOYEES",
+      "column_name": "EMPLOYEE_ID",
+      "column_id": 1,
+      "data_type": "NUMBER",
+      "data_length": 22,
+      "data_precision": 6,
+      "data_scale": 0,
+      "nullable": "N",
+      "data_default": null,
+      "char_length": 0
+    },
+    {
+      "table_name": "EMPLOYEES",
+      "column_name": "FIRST_NAME",
+      "column_id": 2,
+      "data_type": "VARCHAR2",
+      "data_length": 20,
+      "data_precision": null,
+      "data_scale": null,
+      "nullable": "Y",
+      "data_default": null,
+      "char_length": 20
+    },
+    {
+      "table_name": "EMPLOYEES",
+      "column_name": "LAST_NAME",
+      "column_id": 3,
+      "data_type": "VARCHAR2",
+      "data_length": 25,
+      "data_precision": null,
+      "data_scale": null,
+      "nullable": "N",
+      "data_default": null,
+      "char_length": 25
+    },
+    {
+      "table_name": "EMPLOYEES",
+      "column_name": "EMAIL",
+      "column_id": 4,
+      "data_type": "VARCHAR2",
+      "data_length": 25,
+      "data_precision": null,
+      "data_scale": null,
+      "nullable": "N",
+      "data_default": null,
+      "char_length": 25
+    },
+    {
+      "table_name": "EMPLOYEES",
+      "column_name": "PHONE_NUMBER",
+      "column_id": 5,
+      "data_type": "VARCHAR2",
+      "data_length": 20,
+      "data_precision": null,
+      "data_scale": null,
+      "nullable": "Y",
+      "data_default": null,
+      "char_length": 20
+    },
+    {
+      "table_name": "EMPLOYEES",
+      "column_name": "HIRE_DATE",
+      "column_id": 6,
+      "data_type": "DATE",
+      "data_length": 7,
+      "data_precision": null,
+      "data_scale": null,
+      "nullable": "N",
+      "data_default": null,
+      "char_length": 0
+    },
+    {
+      "table_name": "EMPLOYEES",
+      "column_name": "JOB_ID",
+      "column_id": 7,
+      "data_type": "VARCHAR2",
+      "data_length": 10,
+      "data_precision": null,
+      "data_scale": null,
+      "nullable": "N",
+      "data_default": null,
+      "char_length": 10
+    },
+    {
+      "table_name": "EMPLOYEES",
+      "column_name": "SALARY",
+      "column_id": 8,
+      "data_type": "NUMBER",
+      "data_length": 22,
+      "data_precision": 8,
+      "data_scale": 2,
+      "nullable": "Y",
+      "data_default": null,
+      "char_length": 0
+    },
+    {
+      "table_name": "EMPLOYEES",
+      "column_name": "COMMISSION_PCT",
+      "column_id": 9,
+      "data_type": "NUMBER",
+      "data_length": 22,
+      "data_precision": 2,
+      "data_scale": 2,
+      "nullable": "Y",
+      "data_default": null,
+      "char_length": 0
+    },
+    {
+      "table_name": "EMPLOYEES",
+      "column_name": "MANAGER_ID",
+      "column_id": 10,
+      "data_type": "NUMBER",
+      "data_length": 22,
+      "data_precision": 6,
+      "data_scale": 0,
+      "nullable": "Y",
+      "data_default": null,
+      "char_length": 0
+    },
+    {
+      "table_name": "EMPLOYEES",
+      "column_name": "DEPARTMENT_ID",
+      "column_id": 11,
+      "data_type": "NUMBER",
+      "data_length": 22,
+      "data_precision": 4,
+      "data_scale": 0,
+      "nullable": "Y",
+      "data_default": null,
+      "char_length": 0
+    },
+    {
+      "table_name": "JOBS",
+      "column_name": "JOB_ID",
+      "column_id": 1,
+      "data_type": "VARCHAR2",
+      "data_length": 10,
+      "data_precision": null,
+      "data_scale": null,
+      "nullable": "N",
+      "data_default": null,
+      "char_length": 10
+    },
+    {
+      "table_name": "JOBS",
+      "column_name": "JOB_TITLE",
+      "column_id": 2,
+      "data_type": "VARCHAR2",
+      "data_length": 35,
+      "data_precision": null,
+      "data_scale": null,
+      "nullable": "N",
+      "data_default": null,
+      "char_length": 35
+    },
+    {
+      "table_name": "JOBS",
+      "column_name": "MIN_SALARY",
+      "column_id": 3,
+      "data_type": "NUMBER",
+      "data_length": 22,
+      "data_precision": 6,
+      "data_scale": 0,
+      "nullable": "Y",
+      "data_default": null,
+      "char_length": 0
+    },
+    {
+      "table_name": "JOBS",
+      "column_name": "MAX_SALARY",
+      "column_id": 4,
+      "data_type": "NUMBER",
+      "data_length": 22,
+      "data_precision": 6,
+      "data_scale": 0,
+      "nullable": "Y",
+      "data_default": null,
+      "char_length": 0
+    },
+    {
+      "table_name": "JOB_HISTORY",
+      "column_name": "EMPLOYEE_ID",
+      "column_id": 1,
+      "data_type": "NUMBER",
+      "data_length": 22,
+      "data_precision": 6,
+      "data_scale": 0,
+      "nullable": "N",
+      "data_default": null,
+      "char_length": 0
+    },
+    {
+      "table_name": "JOB_HISTORY",
+      "column_name": "START_DATE",
+      "column_id": 2,
+      "data_type": "DATE",
+      "data_length": 7,
+      "data_precision": null,
+      "data_scale": null,
+      "nullable": "N",
+      "data_default": null,
+      "char_length": 0
+    },
+    {
+      "table_name": "JOB_HISTORY",
+      "column_name": "END_DATE",
+      "column_id": 3,
+      "data_type": "DATE",
+      "data_length": 7,
+      "data_precision": null,
+      "data_scale": null,
+      "nullable": "N",
+      "data_default": null,
+      "char_length": 0
+    },
+    {
+      "table_name": "JOB_HISTORY",
+      "column_name": "JOB_ID",
+      "column_id": 4,
+      "data_type": "VARCHAR2",
+      "data_length": 10,
+      "data_precision": null,
+      "data_scale": null,
+      "nullable": "N",
+      "data_default": null,
+      "char_length": 10
+    },
+    {
+      "table_name": "JOB_HISTORY",
+      "column_name": "DEPARTMENT_ID",
+      "column_id": 5,
+      "data_type": "NUMBER",
+      "data_length": 22,
+      "data_precision": 4,
+      "data_scale": 0,
+      "nullable": "Y",
+      "data_default": null,
+      "char_length": 0
+    },
+    {
+      "table_name": "LOCATIONS",
+      "column_name": "LOCATION_ID",
+      "column_id": 1,
+      "data_type": "NUMBER",
+      "data_length": 22,
+      "data_precision": 4,
+      "data_scale": 0,
+      "nullable": "N",
+      "data_default": null,
+      "char_length": 0
+    },
+    {
+      "table_name": "LOCATIONS",
+      "column_name": "STREET_ADDRESS",
+      "column_id": 2,
+      "data_type": "VARCHAR2",
+      "data_length": 40,
+      "data_precision": null,
+      "data_scale": null,
+      "nullable": "Y",
+      "data_default": null,
+      "char_length": 40
+    },
+    {
+      "table_name": "LOCATIONS",
+      "column_name": "POSTAL_CODE",
+      "column_id": 3,
+      "data_type": "VARCHAR2",
+      "data_length": 12,
+      "data_precision": null,
+      "data_scale": null,
+      "nullable": "Y",
+      "data_default": null,
+      "char_length": 12
+    },
+    {
+      "table_name": "LOCATIONS",
+      "column_name": "CITY",
+      "column_id": 4,
+      "data_type": "VARCHAR2",
+      "data_length": 30,
+      "data_precision": null,
+      "data_scale": null,
+      "nullable": "N",
+      "data_default": null,
+      "char_length": 30
+    },
+    {
+      "table_name": "LOCATIONS",
+      "column_name": "STATE_PROVINCE",
+      "column_id": 5,
+      "data_type": "VARCHAR2",
+      "data_length": 25,
+      "data_precision": null,
+      "data_scale": null,
+      "nullable": "Y",
+      "data_default": null,
+      "char_length": 25
+    },
+    {
+      "table_name": "LOCATIONS",
+      "column_name": "COUNTRY_ID",
+      "column_id": 6,
+      "data_type": "CHAR",
+      "data_length": 2,
+      "data_precision": null,
+      "data_scale": null,
+      "nullable": "Y",
+      "data_default": null,
+      "char_length": 2
+    },
+    {
+      "table_name": "REGIONS",
+      "column_name": "REGION_ID",
+      "column_id": 1,
+      "data_type": "NUMBER",
+      "data_length": 22,
+      "data_precision": null,
+      "data_scale": null,
+      "nullable": "N",
+      "data_default": null,
+      "char_length": 0
+    },
+    {
+      "table_name": "REGIONS",
+      "column_name": "REGION_NAME",
+      "column_id": 2,
+      "data_type": "VARCHAR2",
+      "data_length": 25,
+      "data_precision": null,
+      "data_scale": null,
+      "nullable": "Y",
+      "data_default": null,
+      "char_length": 25
+    }
+  ],
+  "constraints": [
+    {
+      "table_name": "COUNTRIES",
+      "constraint_name": "COUNTRY_ID_NN",
+      "constraint_type": "C",
+      "status": "ENABLED",
+      "validated": "VALIDATED",
+      "search_condition": "\"COUNTRY_ID\" IS NOT NULL",
+      "r_owner": null,
+      "r_constraint_name": null,
+      "delete_rule": null
+    },
+    {
+      "table_name": "COUNTRIES",
+      "constraint_name": "COUNTRY_C_ID_PK",
+      "constraint_type": "P",
+      "status": "ENABLED",
+      "validated": "VALIDATED",
+      "search_condition": null,
+      "r_owner": null,
+      "r_constraint_name": null,
+      "delete_rule": null
+    },
+    {
+      "table_name": "COUNTRIES",
+      "constraint_name": "COUNTR_REG_FK",
+      "constraint_type": "R",
+      "status": "ENABLED",
+      "validated": "VALIDATED",
+      "search_condition": null,
+      "r_owner": "HR",
+      "r_constraint_name": "REG_ID_PK",
+      "delete_rule": "NO ACTION"
+    },
+    {
+      "table_name": "DEPARTMENTS",
+      "constraint_name": "DEPT_NAME_NN",
+      "constraint_type": "C",
+      "status": "ENABLED",
+      "validated": "VALIDATED",
+      "search_condition": "\"DEPARTMENT_NAME\" IS NOT NULL",
+      "r_owner": null,
+      "r_constraint_name": null,
+      "delete_rule": null
+    },
+    {
+      "table_name": "DEPARTMENTS",
+      "constraint_name": "DEPT_ID_PK",
+      "constraint_type": "P",
+      "status": "ENABLED",
+      "validated": "VALIDATED",
+      "search_condition": null,
+      "r_owner": null,
+      "r_constraint_name": null,
+      "delete_rule": null
+    },
+    {
+      "table_name": "DEPARTMENTS",
+      "constraint_name": "DEPT_LOC_FK",
+      "constraint_type": "R",
+      "status": "ENABLED",
+      "validated": "VALIDATED",
+      "search_condition": null,
+      "r_owner": "HR",
+      "r_constraint_name": "LOC_ID_PK",
+      "delete_rule": "NO ACTION"
+    },
+    {
+      "table_name": "DEPARTMENTS",
+      "constraint_name": "DEPT_MGR_FK",
+      "constraint_type": "R",
+      "status": "ENABLED",
+      "validated": "VALIDATED",
+      "search_condition": null,
+      "r_owner": "HR",
+      "r_constraint_name": "EMP_EMP_ID_PK",
+      "delete_rule": "NO ACTION"
+    },
+    {
+      "table_name": "EMPLOYEES",
+      "constraint_name": "EMP_EMAIL_NN",
+      "constraint_type": "C",
+      "status": "ENABLED",
+      "validated": "VALIDATED",
+      "search_condition": "\"EMAIL\" IS NOT NULL",
+      "r_owner": null,
+      "r_constraint_name": null,
+      "delete_rule": null
+    },
+    {
+      "table_name": "EMPLOYEES",
+      "constraint_name": "EMP_HIRE_DATE_NN",
+      "constraint_type": "C",
+      "status": "ENABLED",
+      "validated": "VALIDATED",
+      "search_condition": "\"HIRE_DATE\" IS NOT NULL",
+      "r_owner": null,
+      "r_constraint_name": null,
+      "delete_rule": null
+    },
+    {
+      "table_name": "EMPLOYEES",
+      "constraint_name": "EMP_JOB_NN",
+      "constraint_type": "C",
+      "status": "ENABLED",
+      "validated": "VALIDATED",
+      "search_condition": "\"JOB_ID\" IS NOT NULL",
+      "r_owner": null,
+      "r_constraint_name": null,
+      "delete_rule": null
+    },
+    {
+      "table_name": "EMPLOYEES",
+      "constraint_name": "EMP_LAST_NAME_NN",
+      "constraint_type": "C",
+      "status": "ENABLED",
+      "validated": "VALIDATED",
+      "search_condition": "\"LAST_NAME\" IS NOT NULL",
+      "r_owner": null,
+      "r_constraint_name": null,
+      "delete_rule": null
+    },
+    {
+      "table_name": "EMPLOYEES",
+      "constraint_name": "EMP_EMP_ID_PK",
+      "constraint_type": "P",
+      "status": "ENABLED",
+      "validated": "VALIDATED",
+      "search_condition": null,
+      "r_owner": null,
+      "r_constraint_name": null,
+      "delete_rule": null
+    },
+    {
+      "table_name": "EMPLOYEES",
+      "constraint_name": "EMP_DEPT_FK",
+      "constraint_type": "R",
+      "status": "ENABLED",
+      "validated": "VALIDATED",
+      "search_condition": null,
+      "r_owner": "HR",
+      "r_constraint_name": "DEPT_ID_PK",
+      "delete_rule": "NO ACTION"
+    },
+    {
+      "table_name": "EMPLOYEES",
+      "constraint_name": "EMP_JOB_FK",
+      "constraint_type": "R",
+      "status": "ENABLED",
+      "validated": "VALIDATED",
+      "search_condition": null,
+      "r_owner": "HR",
+      "r_constraint_name": "JOB_ID_PK",
+      "delete_rule": "NO ACTION"
+    },
+    {
+      "table_name": "EMPLOYEES",
+      "constraint_name": "EMP_MANAGER_FK",
+      "constraint_type": "R",
+      "status": "ENABLED",
+      "validated": "VALIDATED",
+      "search_condition": null,
+      "r_owner": "HR",
+      "r_constraint_name": "EMP_EMP_ID_PK",
+      "delete_rule": "NO ACTION"
+    },
+    {
+      "table_name": "EMPLOYEES",
+      "constraint_name": "EMP_EMAIL_UK",
+      "constraint_type": "U",
+      "status": "ENABLED",
+      "validated": "VALIDATED",
+      "search_condition": null,
+      "r_owner": null,
+      "r_constraint_name": null,
+      "delete_rule": null
+    },
+    {
+      "table_name": "JOBS",
+      "constraint_name": "JOB_TITLE_NN",
+      "constraint_type": "C",
+      "status": "ENABLED",
+      "validated": "VALIDATED",
+      "search_condition": "\"JOB_TITLE\" IS NOT NULL",
+      "r_owner": null,
+      "r_constraint_name": null,
+      "delete_rule": null
+    },
+    {
+      "table_name": "JOBS",
+      "constraint_name": "JOB_ID_PK",
+      "constraint_type": "P",
+      "status": "ENABLED",
+      "validated": "VALIDATED",
+      "search_condition": null,
+      "r_owner": null,
+      "r_constraint_name": null,
+      "delete_rule": null
+    },
+    {
+      "table_name": "JOB_HISTORY",
+      "constraint_name": "JHIST_DATE_INTERVAL",
+      "constraint_type": "C",
+      "status": "ENABLED",
+      "validated": "VALIDATED",
+      "search_condition": "end_date > start_date",
+      "r_owner": null,
+      "r_constraint_name": null,
+      "delete_rule": null
+    },
+    {
+      "table_name": "JOB_HISTORY",
+      "constraint_name": "JHIST_EMPLOYEE_NN",
+      "constraint_type": "C",
+      "status": "ENABLED",
+      "validated": "VALIDATED",
+      "search_condition": "\"EMPLOYEE_ID\" IS NOT NULL",
+      "r_owner": null,
+      "r_constraint_name": null,
+      "delete_rule": null
+    },
+    {
+      "table_name": "JOB_HISTORY",
+      "constraint_name": "JHIST_END_DATE_NN",
+      "constraint_type": "C",
+      "status": "ENABLED",
+      "validated": "VALIDATED",
+      "search_condition": "\"END_DATE\" IS NOT NULL",
+      "r_owner": null,
+      "r_constraint_name": null,
+      "delete_rule": null
+    },
+    {
+      "table_name": "JOB_HISTORY",
+      "constraint_name": "JHIST_JOB_NN",
+      "constraint_type": "C",
+      "status": "ENABLED",
+      "validated": "VALIDATED",
+      "search_condition": "\"JOB_ID\" IS NOT NULL",
+      "r_owner": null,
+      "r_constraint_name": null,
+      "delete_rule": null
+    },
+    {
+      "table_name": "JOB_HISTORY",
+      "constraint_name": "JHIST_START_DATE_NN",
+      "constraint_type": "C",
+      "status": "ENABLED",
+      "validated": "VALIDATED",
+      "search_condition": "\"START_DATE\" IS NOT NULL",
+      "r_owner": null,
+      "r_constraint_name": null,
+      "delete_rule": null
+    },
+    {
+      "table_name": "JOB_HISTORY",
+      "constraint_name": "JHIST_EMP_ID_ST_DATE_PK",
+      "constraint_type": "P",
+      "status": "ENABLED",
+      "validated": "VALIDATED",
+      "search_condition": null,
+      "r_owner": null,
+      "r_constraint_name": null,
+      "delete_rule": null
+    },
+    {
+      "table_name": "JOB_HISTORY",
+      "constraint_name": "JHIST_DEPT_FK",
+      "constraint_type": "R",
+      "status": "ENABLED",
+      "validated": "VALIDATED",
+      "search_condition": null,
+      "r_owner": "HR",
+      "r_constraint_name": "DEPT_ID_PK",
+      "delete_rule": "NO ACTION"
+    },
+    {
+      "table_name": "JOB_HISTORY",
+      "constraint_name": "JHIST_EMP_FK",
+      "constraint_type": "R",
+      "status": "ENABLED",
+      "validated": "VALIDATED",
+      "search_condition": null,
+      "r_owner": "HR",
+      "r_constraint_name": "EMP_EMP_ID_PK",
+      "delete_rule": "NO ACTION"
+    },
+    {
+      "table_name": "JOB_HISTORY",
+      "constraint_name": "JHIST_JOB_FK",
+      "constraint_type": "R",
+      "status": "ENABLED",
+      "validated": "VALIDATED",
+      "search_condition": null,
+      "r_owner": "HR",
+      "r_constraint_name": "JOB_ID_PK",
+      "delete_rule": "NO ACTION"
+    },
+    {
+      "table_name": "LOCATIONS",
+      "constraint_name": "LOC_CITY_NN",
+      "constraint_type": "C",
+      "status": "ENABLED",
+      "validated": "VALIDATED",
+      "search_condition": "\"CITY\" IS NOT NULL",
+      "r_owner": null,
+      "r_constraint_name": null,
+      "delete_rule": null
+    },
+    {
+      "table_name": "LOCATIONS",
+      "constraint_name": "LOC_ID_PK",
+      "constraint_type": "P",
+      "status": "ENABLED",
+      "validated": "VALIDATED",
+      "search_condition": null,
+      "r_owner": null,
+      "r_constraint_name": null,
+      "delete_rule": null
+    },
+    {
+      "table_name": "LOCATIONS",
+      "constraint_name": "LOC_C_ID_FK",
+      "constraint_type": "R",
+      "status": "ENABLED",
+      "validated": "VALIDATED",
+      "search_condition": null,
+      "r_owner": "HR",
+      "r_constraint_name": "COUNTRY_C_ID_PK",
+      "delete_rule": "NO ACTION"
+    },
+    {
+      "table_name": "REGIONS",
+      "constraint_name": "REGION_ID_NN",
+      "constraint_type": "C",
+      "status": "ENABLED",
+      "validated": "VALIDATED",
+      "search_condition": "\"REGION_ID\" IS NOT NULL",
+      "r_owner": null,
+      "r_constraint_name": null,
+      "delete_rule": null
+    },
+    {
+      "table_name": "REGIONS",
+      "constraint_name": "REG_ID_PK",
+      "constraint_type": "P",
+      "status": "ENABLED",
+      "validated": "VALIDATED",
+      "search_condition": null,
+      "r_owner": null,
+      "r_constraint_name": null,
+      "delete_rule": null
+    }
+  ],
+  "constraint_columns": [
+    {
+      "constraint_name": "COUNTRY_C_ID_PK",
+      "table_name": "COUNTRIES",
+      "column_name": "COUNTRY_ID",
+      "position": 1
+    },
+    {
+      "constraint_name": "COUNTRY_ID_NN",
+      "table_name": "COUNTRIES",
+      "column_name": "COUNTRY_ID",
+      "position": null
+    },
+    {
+      "constraint_name": "COUNTR_REG_FK",
+      "table_name": "COUNTRIES",
+      "column_name": "REGION_ID",
+      "position": 1
+    },
+    {
+      "constraint_name": "DEPT_ID_PK",
+      "table_name": "DEPARTMENTS",
+      "column_name": "DEPARTMENT_ID",
+      "position": 1
+    },
+    {
+      "constraint_name": "DEPT_LOC_FK",
+      "table_name": "DEPARTMENTS",
+      "column_name": "LOCATION_ID",
+      "position": 1
+    },
+    {
+      "constraint_name": "DEPT_MGR_FK",
+      "table_name": "DEPARTMENTS",
+      "column_name": "MANAGER_ID",
+      "position": 1
+    },
+    {
+      "constraint_name": "DEPT_NAME_NN",
+      "table_name": "DEPARTMENTS",
+      "column_name": "DEPARTMENT_NAME",
+      "position": null
+    },
+    {
+      "constraint_name": "EMP_DEPT_FK",
+      "table_name": "EMPLOYEES",
+      "column_name": "DEPARTMENT_ID",
+      "position": 1
+    },
+    {
+      "constraint_name": "EMP_EMAIL_NN",
+      "table_name": "EMPLOYEES",
+      "column_name": "EMAIL",
+      "position": null
+    },
+    {
+      "constraint_name": "EMP_EMAIL_UK",
+      "table_name": "EMPLOYEES",
+      "column_name": "EMAIL",
+      "position": 1
+    },
+    {
+      "constraint_name": "EMP_EMP_ID_PK",
+      "table_name": "EMPLOYEES",
+      "column_name": "EMPLOYEE_ID",
+      "position": 1
+    },
+    {
+      "constraint_name": "EMP_HIRE_DATE_NN",
+      "table_name": "EMPLOYEES",
+      "column_name": "HIRE_DATE",
+      "position": null
+    },
+    {
+      "constraint_name": "EMP_JOB_FK",
+      "table_name": "EMPLOYEES",
+      "column_name": "JOB_ID",
+      "position": 1
+    },
+    {
+      "constraint_name": "EMP_JOB_NN",
+      "table_name": "EMPLOYEES",
+      "column_name": "JOB_ID",
+      "position": null
+    },
+    {
+      "constraint_name": "EMP_LAST_NAME_NN",
+      "table_name": "EMPLOYEES",
+      "column_name": "LAST_NAME",
+      "position": null
+    },
+    {
+      "constraint_name": "EMP_MANAGER_FK",
+      "table_name": "EMPLOYEES",
+      "column_name": "MANAGER_ID",
+      "position": 1
+    },
+    {
+      "constraint_name": "JHIST_DATE_INTERVAL",
+      "table_name": "JOB_HISTORY",
+      "column_name": "END_DATE",
+      "position": null
+    },
+    {
+      "constraint_name": "JHIST_DATE_INTERVAL",
+      "table_name": "JOB_HISTORY",
+      "column_name": "START_DATE",
+      "position": null
+    },
+    {
+      "constraint_name": "JHIST_DEPT_FK",
+      "table_name": "JOB_HISTORY",
+      "column_name": "DEPARTMENT_ID",
+      "position": 1
+    },
+    {
+      "constraint_name": "JHIST_EMPLOYEE_NN",
+      "table_name": "JOB_HISTORY",
+      "column_name": "EMPLOYEE_ID",
+      "position": null
+    },
+    {
+      "constraint_name": "JHIST_EMP_FK",
+      "table_name": "JOB_HISTORY",
+      "column_name": "EMPLOYEE_ID",
+      "position": 1
+    },
+    {
+      "constraint_name": "JHIST_EMP_ID_ST_DATE_PK",
+      "table_name": "JOB_HISTORY",
+      "column_name": "EMPLOYEE_ID",
+      "position": 1
+    },
+    {
+      "constraint_name": "JHIST_EMP_ID_ST_DATE_PK",
+      "table_name": "JOB_HISTORY",
+      "column_name": "START_DATE",
+      "position": 2
+    },
+    {
+      "constraint_name": "JHIST_END_DATE_NN",
+      "table_name": "JOB_HISTORY",
+      "column_name": "END_DATE",
+      "position": null
+    },
+    {
+      "constraint_name": "JHIST_JOB_FK",
+      "table_name": "JOB_HISTORY",
+      "column_name": "JOB_ID",
+      "position": 1
+    },
+    {
+      "constraint_name": "JHIST_JOB_NN",
+      "table_name": "JOB_HISTORY",
+      "column_name": "JOB_ID",
+      "position": null
+    },
+    {
+      "constraint_name": "JHIST_START_DATE_NN",
+      "table_name": "JOB_HISTORY",
+      "column_name": "START_DATE",
+      "position": null
+    },
+    {
+      "constraint_name": "JOB_ID_PK",
+      "table_name": "JOBS",
+      "column_name": "JOB_ID",
+      "position": 1
+    },
+    {
+      "constraint_name": "JOB_TITLE_NN",
+      "table_name": "JOBS",
+      "column_name": "JOB_TITLE",
+      "position": null
+    },
+    {
+      "constraint_name": "LOC_CITY_NN",
+      "table_name": "LOCATIONS",
+      "column_name": "CITY",
+      "position": null
+    },
+    {
+      "constraint_name": "LOC_C_ID_FK",
+      "table_name": "LOCATIONS",
+      "column_name": "COUNTRY_ID",
+      "position": 1
+    },
+    {
+      "constraint_name": "LOC_ID_PK",
+      "table_name": "LOCATIONS",
+      "column_name": "LOCATION_ID",
+      "position": 1
+    },
+    {
+      "constraint_name": "REGION_ID_NN",
+      "table_name": "REGIONS",
+      "column_name": "REGION_ID",
+      "position": null
+    },
+    {
+      "constraint_name": "REG_ID_PK",
+      "table_name": "REGIONS",
+      "column_name": "REGION_ID",
+      "position": 1
+    }
+  ],
+  "indexes": [
+    {
+      "index_name": "DEPT_LOCATION_IX",
+      "table_name": "DEPARTMENTS",
+      "index_type": "NORMAL",
+      "uniqueness": "NONUNIQUE",
+      "status": "VALID",
+      "partitioned": "NO"
+    },
+    {
+      "index_name": "EMP_DEPARTMENT_IX",
+      "table_name": "EMPLOYEES",
+      "index_type": "NORMAL",
+      "uniqueness": "NONUNIQUE",
+      "status": "VALID",
+      "partitioned": "NO"
+    },
+    {
+      "index_name": "EMP_JOB_IX",
+      "table_name": "EMPLOYEES",
+      "index_type": "NORMAL",
+      "uniqueness": "NONUNIQUE",
+      "status": "VALID",
+      "partitioned": "NO"
+    },
+    {
+      "index_name": "EMP_MANAGER_IX",
+      "table_name": "EMPLOYEES",
+      "index_type": "NORMAL",
+      "uniqueness": "NONUNIQUE",
+      "status": "VALID",
+      "partitioned": "NO"
+    },
+    {
+      "index_name": "EMP_NAME_IX",
+      "table_name": "EMPLOYEES",
+      "index_type": "NORMAL",
+      "uniqueness": "NONUNIQUE",
+      "status": "VALID",
+      "partitioned": "NO"
+    },
+    {
+      "index_name": "JHIST_DEPARTMENT_IX",
+      "table_name": "JOB_HISTORY",
+      "index_type": "NORMAL",
+      "uniqueness": "NONUNIQUE",
+      "status": "VALID",
+      "partitioned": "NO"
+    },
+    {
+      "index_name": "JHIST_EMPLOYEE_IX",
+      "table_name": "JOB_HISTORY",
+      "index_type": "NORMAL",
+      "uniqueness": "NONUNIQUE",
+      "status": "VALID",
+      "partitioned": "NO"
+    },
+    {
+      "index_name": "JHIST_JOB_IX",
+      "table_name": "JOB_HISTORY",
+      "index_type": "NORMAL",
+      "uniqueness": "NONUNIQUE",
+      "status": "VALID",
+      "partitioned": "NO"
+    },
+    {
+      "index_name": "LOC_CITY_IX",
+      "table_name": "LOCATIONS",
+      "index_type": "NORMAL",
+      "uniqueness": "NONUNIQUE",
+      "status": "VALID",
+      "partitioned": "NO"
+    },
+    {
+      "index_name": "LOC_COUNTRY_IX",
+      "table_name": "LOCATIONS",
+      "index_type": "NORMAL",
+      "uniqueness": "NONUNIQUE",
+      "status": "VALID",
+      "partitioned": "NO"
+    },
+    {
+      "index_name": "LOC_STATE_PROVINCE_IX",
+      "table_name": "LOCATIONS",
+      "index_type": "NORMAL",
+      "uniqueness": "NONUNIQUE",
+      "status": "VALID",
+      "partitioned": "NO"
+    }
+  ],
+  "index_columns": [
+    {
+      "index_name": "COUNTRY_C_ID_PK",
+      "table_name": "COUNTRIES",
+      "column_name": "COUNTRY_ID",
+      "column_position": 1,
+      "descend": "ASC"
+    },
+    {
+      "index_name": "DEPT_ID_PK",
+      "table_name": "DEPARTMENTS",
+      "column_name": "DEPARTMENT_ID",
+      "column_position": 1,
+      "descend": "ASC"
+    },
+    {
+      "index_name": "DEPT_LOCATION_IX",
+      "table_name": "DEPARTMENTS",
+      "column_name": "LOCATION_ID",
+      "column_position": 1,
+      "descend": "ASC"
+    },
+    {
+      "index_name": "EMP_DEPARTMENT_IX",
+      "table_name": "EMPLOYEES",
+      "column_name": "DEPARTMENT_ID",
+      "column_position": 1,
+      "descend": "ASC"
+    },
+    {
+      "index_name": "EMP_EMAIL_UK",
+      "table_name": "EMPLOYEES",
+      "column_name": "EMAIL",
+      "column_position": 1,
+      "descend": "ASC"
+    },
+    {
+      "index_name": "EMP_EMP_ID_PK",
+      "table_name": "EMPLOYEES",
+      "column_name": "EMPLOYEE_ID",
+      "column_position": 1,
+      "descend": "ASC"
+    },
+    {
+      "index_name": "EMP_JOB_IX",
+      "table_name": "EMPLOYEES",
+      "column_name": "JOB_ID",
+      "column_position": 1,
+      "descend": "ASC"
+    },
+    {
+      "index_name": "EMP_MANAGER_IX",
+      "table_name": "EMPLOYEES",
+      "column_name": "MANAGER_ID",
+      "column_position": 1,
+      "descend": "ASC"
+    },
+    {
+      "index_name": "EMP_NAME_IX",
+      "table_name": "EMPLOYEES",
+      "column_name": "LAST_NAME",
+      "column_position": 1,
+      "descend": "ASC"
+    },
+    {
+      "index_name": "EMP_NAME_IX",
+      "table_name": "EMPLOYEES",
+      "column_name": "FIRST_NAME",
+      "column_position": 2,
+      "descend": "ASC"
+    },
+    {
+      "index_name": "JHIST_DEPARTMENT_IX",
+      "table_name": "JOB_HISTORY",
+      "column_name": "DEPARTMENT_ID",
+      "column_position": 1,
+      "descend": "ASC"
+    },
+    {
+      "index_name": "JHIST_EMPLOYEE_IX",
+      "table_name": "JOB_HISTORY",
+      "column_name": "EMPLOYEE_ID",
+      "column_position": 1,
+      "descend": "ASC"
+    },
+    {
+      "index_name": "JHIST_EMP_ID_ST_DATE_PK",
+      "table_name": "JOB_HISTORY",
+      "column_name": "EMPLOYEE_ID",
+      "column_position": 1,
+      "descend": "ASC"
+    },
+    {
+      "index_name": "JHIST_EMP_ID_ST_DATE_PK",
+      "table_name": "JOB_HISTORY",
+      "column_name": "START_DATE",
+      "column_position": 2,
+      "descend": "ASC"
+    },
+    {
+      "index_name": "JHIST_JOB_IX",
+      "table_name": "JOB_HISTORY",
+      "column_name": "JOB_ID",
+      "column_position": 1,
+      "descend": "ASC"
+    },
+    {
+      "index_name": "JOB_ID_PK",
+      "table_name": "JOBS",
+      "column_name": "JOB_ID",
+      "column_position": 1,
+      "descend": "ASC"
+    },
+    {
+      "index_name": "LOC_CITY_IX",
+      "table_name": "LOCATIONS",
+      "column_name": "CITY",
+      "column_position": 1,
+      "descend": "ASC"
+    },
+    {
+      "index_name": "LOC_COUNTRY_IX",
+      "table_name": "LOCATIONS",
+      "column_name": "COUNTRY_ID",
+      "column_position": 1,
+      "descend": "ASC"
+    },
+    {
+      "index_name": "LOC_ID_PK",
+      "table_name": "LOCATIONS",
+      "column_name": "LOCATION_ID",
+      "column_position": 1,
+      "descend": "ASC"
+    },
+    {
+      "index_name": "LOC_STATE_PROVINCE_IX",
+      "table_name": "LOCATIONS",
+      "column_name": "STATE_PROVINCE",
+      "column_position": 1,
+      "descend": "ASC"
+    },
+    {
+      "index_name": "REG_ID_PK",
+      "table_name": "REGIONS",
+      "column_name": "REGION_ID",
+      "column_position": 1,
+      "descend": "ASC"
+    }
+  ],
+  "sequences": [
+    {
+      "sequence_name": "DEPARTMENTS_SEQ",
+      "min_value": 1,
+      "max_value": 9999999999999999999999999999,
+      "increment_by": 10,
+      "cycle_flag": "N",
+      "order_flag": "N",
+      "cache_size": 20,
+      "last_number": 280
+    },
+    {
+      "sequence_name": "EMPLOYEES_SEQ",
+      "min_value": 1,
+      "max_value": 9999999999999999999999999999,
+      "increment_by": 1,
+      "cycle_flag": "N",
+      "order_flag": "N",
+      "cache_size": 20,
+      "last_number": 207
+    },
+    {
+      "sequence_name": "LOCATIONS_SEQ",
+      "min_value": 1,
+      "max_value": 9999999999999999999999999999,
+      "increment_by": 100,
+      "cycle_flag": "N",
+      "order_flag": "N",
+      "cache_size": 20,
+      "last_number": 3300
+    }
+  ],
+  "views": [],
+  "triggers": []
+}
