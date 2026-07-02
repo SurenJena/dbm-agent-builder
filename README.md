@@ -1,4 +1,5 @@
-[README.md](https://github.com/user-attachments/files/29582714/README.md)[Uploading RE# Oracle → PostgreSQL Migration Framework
+[README.md](https://github.com/user-attachments/files/29583580/README.md)
+# Oracle → PostgreSQL Migration Framework
 
 <div align="center">
 
@@ -38,8 +39,7 @@ DDL conversion · FK-aware batch loading · Dual-layer validation · No Oracle O
 15. [Troubleshooting](#troubleshooting)
 16. [Rollback Procedure](#rollback-procedure)
 17. [Roadmap](#roadmap)
-18. [Professional Summary](#professional-summary)
-19. [Architecture Decision Summary](#architecture-decision-summary)
+18. [Architecture Decision Summary](#architecture-decision-summary)
 
 ---
 
@@ -815,6 +815,8 @@ DROP SCHEMA hr CASCADE;
 - [ ] Partitioned table handling (Oracle → PG declarative partitioning)
 - [ ] Docker Compose setup for local Oracle + PostgreSQL test environments
 - [ ] GitHub Actions CI workflow for automated lint + connection tests
+- [ ] Extend support to additional structured databases
+- [ ] Validate migrations across multiple database platforms
 
 ### Long-Term
 
@@ -824,20 +826,8 @@ DROP SCHEMA hr CASCADE;
 - [ ] Encrypted credential storage (Vault, AWS Secrets Manager, Azure Key Vault)
 - [ ] Prometheus metrics export + web dashboard for migration progress
 - [ ] Schema diff tool (compare Oracle source vs PostgreSQL target post-migration)
-
----
-
-## Professional Summary
-
-### Portfolio / Resume
-
-**Oracle to PostgreSQL Migration Framework** — Production-ready, idempotent Python + Bash pipeline automating the complete Oracle → PostgreSQL database migration lifecycle: schema discovery, DDL conversion (17 type mappings), FK-aware batch data loading via `psycopg2 copy_expert()`, and dual-layer validation (row counts + MD5 checksums). Eliminated Oracle OCI client dependency via `oracledb` thin mode. Delivered 12-phase architecture with comprehensive per-phase logging, structured JSON artefacts, and documented rollback procedures. Validated against the Oracle HR reference schema with 131 rows across 7 tables, 7 tables, 3 sequences, 11 indexes — **0 data discrepancies** post-migration.
-
-**Tech:** Python 3.9+, Bash, oracledb (thin mode), psycopg2, PostgreSQL 12+, Oracle 11g+, Kahn's algorithm
-
-### LinkedIn
-
-> Designed and implemented a production-ready database migration framework automating the Oracle → PostgreSQL cutover lifecycle. Delivered an idempotent 12-phase pipeline with schema discovery, DDL conversion, FK-aware data loading, and dual-layer validation. Zero Oracle OCI dependency — runs on any Python 3.9+ host. Achieved 0 row-count mismatches and 100% checksum match on the Oracle HR reference schema. Generated full audit trails via structured JSON reports and timestamped logs.
+- [ ] Add front-end database query migration
+- [ ] Expand AI-assisted migration and optimization features
 
 ---
 
@@ -929,4 +919,3 @@ graph TB
 Made with [Bob AI](https://github.com/IBM/bob-ai) · Production-ready · Idempotent · Validated
 
 </div>
-ADME.md…]()
