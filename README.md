@@ -1,5 +1,4 @@
-[README.md](https://github.com/user-attachments/files/29582449/README.md)
-# Oracle → PostgreSQL Migration Framework
+[README.md](https://github.com/user-attachments/files/29582714/README.md)[Uploading RE# Oracle → PostgreSQL Migration Framework
 
 <div align="center">
 
@@ -39,9 +38,8 @@ DDL conversion · FK-aware batch loading · Dual-layer validation · No Oracle O
 15. [Troubleshooting](#troubleshooting)
 16. [Rollback Procedure](#rollback-procedure)
 17. [Roadmap](#roadmap)
-18. [GitHub Best Practices Checklist](#github-best-practices-checklist)
-19. [Professional Summary](#professional-summary)
-20. [Architecture Decision Summary](#architecture-decision-summary)
+18. [Professional Summary](#professional-summary)
+19. [Architecture Decision Summary](#architecture-decision-summary)
 
 ---
 
@@ -829,60 +827,6 @@ DROP SCHEMA hr CASCADE;
 
 ---
 
-## GitHub Best Practices Checklist
-
-| Item | Status | Action |
-|---|---|---|
-| README | ✅ Present | — |
-| `.gitignore` | ✅ Present | — |
-| `requirements.txt` | ✅ Pinned versions | — |
-| LICENSE | ❌ Missing | Add MIT or Apache 2.0 |
-| CONTRIBUTING.md | ❌ Missing | See template below |
-| CODE_OF_CONDUCT.md | ❌ Missing | Contributor Covenant recommended |
-| SECURITY.md | ❌ Missing | Document credential policy |
-| CHANGELOG.md | ❌ Missing | [Keep a Changelog](https://keepachangelog.com/) format |
-| Badges | ✅ Added | Python, PostgreSQL, Oracle, License, Status |
-| GitHub Actions CI | ❌ Missing | Add lint + typecheck workflow |
-| Issue templates | ❌ Missing | Bug report + feature request templates |
-| PR template | ❌ Missing | Add `.github/PULL_REQUEST_TEMPLATE.md` |
-| Release tags | ❌ Unknown | Add semantic version tags (`v1.0.0`) |
-
-### CONTRIBUTING.md Template
-
-```markdown
-## Contributing
-
-1. Fork the repository and create a feature branch
-2. Run `./scripts/run_migration.sh` to verify all phases pass
-3. Ensure no new linting errors (`flake8 .`)
-4. Submit a pull request with a clear description of the change
-
-## Code Style
-- Python: PEP 8 (enforced via `black` and `flake8`)
-- Shell: ShellCheck clean
-- Commit messages: conventional commits (`feat:`, `fix:`, `docs:`)
-```
-
-### GitHub Actions CI Starter
-
-```yaml
-# .github/workflows/lint.yml
-name: Lint
-on: [push, pull_request]
-jobs:
-  lint:
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v4
-      - uses: actions/setup-python@v5
-        with: { python-version: '3.11' }
-      - run: pip install flake8 black
-      - run: black --check oracle-to-postgresql/
-      - run: flake8 oracle-to-postgresql/
-```
-
----
-
 ## Professional Summary
 
 ### Portfolio / Resume
@@ -985,3 +929,4 @@ graph TB
 Made with [Bob AI](https://github.com/IBM/bob-ai) · Production-ready · Idempotent · Validated
 
 </div>
+ADME.md…]()
